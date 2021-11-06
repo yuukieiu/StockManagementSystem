@@ -8,6 +8,8 @@ const ACTIVE_USER = Session.getActiveUser().getEmail();
 
 const ENCRYPTED_ACTIVE_USER = Utilities.base64EncodeWebSafe(Session.getActiveUser().getEmail());
 
+const ENVIRONMENT = (PropertiesService.getScriptProperties().getProperty("ENVIRONMENT") == "STG") ? "[STG]" : "";
+
 var list;
 
 function getStockList() {
