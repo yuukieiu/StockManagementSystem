@@ -189,3 +189,34 @@ function registerStocker(stockName, stockCount = 0, lastBuyDate = null, lastUnse
     writeEndLog(functionName);
     return returnValue;
   }
+
+// ------------------------
+// ストック情報更新
+// ------------------------
+function updateStocker(targetStockerName = "", newStockerName, newCategory, newNotifyThreshold) {
+  const functionName = "ストック情報更新";
+  writeStartLog(functionName);
+
+  var returnValue = {
+    status  : true,
+    message : "success!!"
+  }
+
+  try {
+      var result = updateStockInfo(targetStockerName, newStockerName, newCategory, newNotifyThreshold);
+  } catch (e) {
+    returnValue.status = false;
+    switch(e.message) {
+        case DB_EMPTY_STOCK_OBJECT_EXCEPTION:
+            returnValue.message = "指定のストックが存在しないためストック情報更新できませんでした。";
+            break;
+        default:
+            returnValue.message = "ストック情報更新できませんでした。データ：" + targetStockerName;
+            break;
+    }
+    warnLog(functionName, returnValue.message);
+  }
+
+  writeEndLog(functionName);
+  return returnValue;
+}

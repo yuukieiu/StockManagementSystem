@@ -58,6 +58,10 @@ function doGet(e) {
                     break;
             }
         }
+        break;
+      case "edit" :
+        result = updateStocker(jsonData.stocker.oldname, jsonData.stocker.newname, jsonData.stocker.newcategory, jsonData.stocker.newnotifythreshold);
+        break;
       default:
         break;
     }

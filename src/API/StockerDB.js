@@ -154,6 +154,31 @@ function subStockCount(stockName = "", subCount = 0) {
   return result;
 }
 
+// ------------------------
+// ストック情報更新
+// ------------------------
+function updateStockInfo(targetStockerName = "", newStockerName, newCategory, newNotifyThreshold) {
+  // new～は変更が無ければそのまま入ってくるので、値の検証はしない
+
+  // なにもなければ成功
+  var result = true;
+
+  var target = getStockByName(targetStockerName);
+  if (target == null) throw new Error(DB_EMPTY_STOCK_OBJECT_EXCEPTION);
+
+  if (target.StockerName != newStockerName) {
+    writeValueInCell(STOCKER_NAME, target.RowIndex, newStockerName);
+  }
+  if (target.Category != newCategory) {
+    writeValueInCell(CATEGORY, target.RowIndex, newCategory);
+  }
+  if (target.NotifyThreshold != newNotifyThreshold) {
+    writeValueInCell(NOTIFY_THRESHOLD, target.RowIndex, newNotifyThreshold);
+  }
+
+  return result;
+}
+
 // ★★★Delete★★★
 // ------------------------
 // ストック品削除(ストック品名)
