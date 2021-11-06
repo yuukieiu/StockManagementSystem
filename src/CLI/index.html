@@ -127,6 +127,7 @@
                             <v-text-field
                               v-model="editedItem.StockerName"
                               label="ストック品名（必須）"
+                              required
                             ></v-text-field>
                           </v-col>
                           <v-col cols="12" sm="6" md="4">
@@ -134,13 +135,16 @@
                               v-model="editedItem.Category"
                               :items="categoryList"
                               label="分類（必須）"
+                              required
                             ></v-combobox>
                           </v-col>
                           <v-col cols="12" sm="6" md="4">
-                            <v-text-field
+                            <v-select
                               v-model.number="editedItem.StockCount"
+                              :items="numberItems"
                               label="ストック数"
-                            ></v-text-field>
+                              required
+                            ></v-select>
                           </v-col>
                           <v-col cols="12" sm="6" md="4">
                             <v-menu
@@ -187,10 +191,11 @@
                             <v-date-picker v-model="editedItem.LastUnsealDate" @input="lastUnsealDateMenu = false"/>
                           </v-col>
                           <v-col cols="12" sm="6" md="4">
-                            <v-text-field
+                            <v-select
                               v-model.number="editedItem.NotifyThreshold"
+                              :items="numberItemsInclZero"
                               label="通知閾値"
-                            ></v-text-field>
+                            ></v-select>
                           </v-col>
                         </v-row>
                       </v-container>
@@ -215,10 +220,12 @@
                       <v-container>
                         <v-row>
                           <v-col cols="12" sm="6" md="4">
-                            <v-text-field
+                            <v-select
                               v-model.number="editedItem.StockCount"
+                              :items="numberItems"
                               label="追加ストック数"
-                            ></v-text-field>
+                              required
+                            ></v-select>
                           </v-col>
                         </v-row>
                       </v-container>
@@ -243,10 +250,12 @@
                       <v-container>
                         <v-row>
                           <v-col cols="12" sm="6" md="4">
-                            <v-text-field
+                            <v-select
                               v-model.number="editedItem.StockCount"
+                              :items="numberItems"
                               label="使用ストック数"
-                            ></v-text-field>
+                              required
+                            ></v-select>
                           </v-col>
                         </v-row>
                       </v-container>
@@ -343,8 +352,6 @@
           { text: '品名', value: 'StockerName' , groupable: false},
           { text: '分類', value: 'Category' , groupable: true},
           { text: 'ストック数', value: 'StockCount' , groupable: false},
-          //{ text: '最終購入日', value: 'LastBuyDate' },
-          //{ text: '最終開封日', value: 'LastUnsealDate' },
           { text: '通知閾値', value: 'NotifyThreshold', sortable: false, groupable: false},
           { text: '操作', value: 'actions', sortable: false , groupable: false},
           { text: '', value: 'data-table-expand', sortable: false , groupable: false },
@@ -366,6 +373,8 @@
           LastUnsealDate: (new Date()).toISOString().substr(0, 10),
           NotifyThreshold: 0,
         },
+        numberItems: [1,2,3,4,5],
+        numberItemsInclZero: [0,1,2,3,4,5],
       }),
 
       watch: {
