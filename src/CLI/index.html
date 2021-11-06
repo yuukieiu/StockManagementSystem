@@ -113,7 +113,7 @@
                 <!--ストック品追加ダイアログ-->
                 <v-dialog v-model="createDialog" max-width="500px">
                   <template v-slot:activator="{ on, attrs }">
-                    <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on" @click="openCreateDialog">ストック品追加</v-btn>
+                    <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on" @click="loadCategoryList">ストック品追加</v-btn>
                   </template>
                   <v-card>
                     <v-card-title>
@@ -309,6 +309,50 @@
               データなし
             </template>
             <template v-slot:expanded-item="{ headers, item }">
+              <!--ストック情報更新ダイアログ-->
+              <v-dialog v-model="editDialog" max-width="500px">
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on" @click="editStock(item)">ストック情報更新</v-btn>
+                </template>
+                <v-card>
+                  <v-card-title>
+                    <span class="text-h5">ストック情報更新：{{ item.StockerName }}</span>
+                  </v-card-title>
+                  <v-card-text>
+                    <v-container>
+                      <v-row>
+                        <v-col cols="12" sm="6" md="4">
+                          <v-text-field
+                            v-model="editedItem.StockerName"
+                            label="ストック品名"
+                            required
+                          ></v-text-field>
+                        </v-col>
+                        <v-col cols="12" sm="6" md="4">
+                          <v-combobox
+                            v-model="editedItem.Category"
+                            :items="categoryList"
+                            label="分類"
+                          ></v-combobox>
+                        </v-col>
+                        <v-col cols="12" sm="6" md="4">
+                          <v-select
+                            v-model.number="editedItem.NotifyThreshold"
+                            :items="numberItemsInclZero"
+                            label="通知閾値"
+                          ></v-select>
+                        </v-col>
+                      </v-row>
+                    </v-container>
+                  </v-card-text>
+
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" text @click="closeEditDialog">キャンセル</v-btn>
+                    <v-btn color="blue darken-1" text @click="edit">更新</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
               <td :colspan="headers.length">
                 分類： {{ item.Category }} 最終購入日： {{ item.LastBuyDate }} 最終開封日： {{ item.LastUnsealDate }}
               </td>
@@ -339,6 +383,7 @@
         addDialog: false,
         subDialog: false,
         deleteDialog: false,
+        editDialog: false,
         lastByDateMenu: false,
         lastUnsealDateMenu: false,
         snackbar: false,
@@ -357,6 +402,7 @@
         ],
         editedIndex: -1,
         editedItem: {
+          TargetStockerName: '',
           StockerName: '',
           StockCount: 0,
           Category: '',
@@ -365,6 +411,7 @@
           NotifyThreshold: 0,
         },
         defaultItem: {
+          TargetStockerName: '',
           StockerName: '',
           StockCount: 0,
           Category: '',
@@ -388,6 +435,9 @@
         },
         deleteDialog (val) {
           val || this.closeDeleteDialog()
+        },
+        editDialog (val) {
+          val || this.closeEditDialog()
         }
       },
 
@@ -420,6 +470,7 @@
             this.editedIndex = -1
           })
         },
+
         async addStockConfirm (item) {
           //alert('追加するよ')
           var params = JSON.stringify({
@@ -504,6 +555,14 @@
           })
         },
 
+        closeEditDialog () {
+          this.editDialog = false
+          this.$nextTick(() => {
+            this.editedItem = Object.assign({}, this.defaultItem)
+            this.editedIndex = -1
+          })
+        },
+
         async create () {
           var params = JSON.stringify({
             encryptedEmail: '<?=ENCRYPTED_ACTIVE_USER?>',
@@ -523,6 +582,29 @@
           this.initialize()
         },
 
+        editStock (item) {
+          this.editedIndex = this.stockerList.indexOf(item)
+          this.editedItem = Object.assign({}, item)
+          this.editedItem.TargetStockerName = this.editedItem.StockerName
+        },
+
+        async edit () {
+          var params = JSON.stringify({
+            encryptedEmail: '<?=ENCRYPTED_ACTIVE_USER?>',
+            method: 'edit',
+            stocker: {
+              oldname: this.editedItem.TargetStockerName,
+              newname: this.editedItem.StockerName,
+              newcategory: this.editedItem.Category,
+              newnotifythreshold: this.editedItem.NotifyThreshold
+            }
+          });
+          //alert('以下のデータを送信するよ。\n' + params)
+          this.closeEditDialog()
+          await this.postRequest(params)
+          this.initialize()
+        },
+
         async postRequest(params) {
           this.overlay = true
           const promise = axios.post('<?=TARGET_URL?>', params)
@@ -532,12 +614,12 @@
           this.overlay = false
         },
 
-        async openCreateDialog() {
+        async loadCategoryList() {
           await axios.get('<?=TARGET_URL_GETCATEGORY?>')
             .then(response => {
               this.categoryList = response.data
             })
-        }
+        },
       }
     })
   </script>
