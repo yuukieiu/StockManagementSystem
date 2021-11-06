@@ -267,20 +267,6 @@
                     </v-card-actions>
                   </v-card>
                 </v-dialog>
-
-                <!--ストック品削除ダイアログ-->
-                <v-dialog v-model="deleteDialog" max-width="500px">
-                  <v-card>
-                    <v-card-title class="text-h5">削除しますか？</v-card-title>
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <v-btn color="blue darken-1" text @click="closeDeleteDialog">キャンセル</v-btn>
-                      <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
-                      <v-spacer></v-spacer>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
-
               </v-toolbar>
             </template>
 
@@ -298,12 +284,6 @@
               >
                 remove_circle_outline
               </v-icon>
-              <v-icon
-                large
-                @click="deleteStock(item)"
-              >
-                delete
-              </v-icon>
             </template>
             <template v-slot:no-data>
               データなし
@@ -315,8 +295,8 @@
                 <!--ストック情報更新ダイアログ-->
                 <v-dialog v-model="editDialog" max-width="500px">
                   <template v-slot:activator="{ on, attrs }">
-                    <v-btn color="indigo" dark class="mx-2" fab v-bind="attrs" v-on="on" @click="editStock(item)">
-                      <v-icon dark large>
+                    <v-btn color="indigo" dark small class="mx-2" fab v-bind="attrs" v-on="on" @click="editStock(item)">
+                      <v-icon dark>
                         mdi-pencil
                       </v-icon>
                     </v-btn>
@@ -356,6 +336,24 @@
                       <v-spacer></v-spacer>
                       <v-btn color="blue darken-1" text @click="closeEditDialog">キャンセル</v-btn>
                       <v-btn color="blue darken-1" text @click="edit">更新</v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+                <!--ストック品削除ダイアログ-->
+                <v-icon
+                  large
+                  @click="deleteStock(item)"
+                >
+                  delete
+                </v-icon>
+                <v-dialog v-model="deleteDialog" max-width="500px">
+                  <v-card>
+                    <v-card-title class="text-h5">削除しますか？</v-card-title>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="blue darken-1" text @click="closeDeleteDialog">キャンセル</v-btn>
+                      <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
+                      <v-spacer></v-spacer>
                     </v-card-actions>
                   </v-card>
                 </v-dialog>
