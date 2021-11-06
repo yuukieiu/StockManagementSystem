@@ -309,11 +309,15 @@
               データなし
             </template>
             <template v-slot:expanded-item="{ headers, item }">
+              <td :colspan="headers.length">
+                分類： {{ item.Category }} 最終購入日： {{ item.LastBuyDate }} 最終開封日： {{ item.LastUnsealDate }}
+              </td>
+              <v-spacer></v-spacer>
               <!--ストック情報更新ダイアログ-->
               <v-dialog v-model="editDialog" max-width="500px">
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn color="indigo" dark class="mx-2" fab v-bind="attrs" v-on="on" @click="editStock(item)">
-                    <v-icon dark>
+                    <v-icon dark large>
                       mdi-pencil
                     </v-icon>
                   </v-btn>
@@ -357,9 +361,6 @@
                   </v-card-actions>
                 </v-card>
               </v-dialog>
-              <td :colspan="headers.length">
-                分類： {{ item.Category }} 最終購入日： {{ item.LastBuyDate }} 最終開封日： {{ item.LastUnsealDate }}
-              </td>
             </template>
           </v-data-table>
         </v-container>
