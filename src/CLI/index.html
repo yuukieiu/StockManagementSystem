@@ -311,56 +311,55 @@
             <template v-slot:expanded-item="{ headers, item }">
               <td :colspan="headers.length">
                 分類： {{ item.Category }} 最終購入日： {{ item.LastBuyDate }} 最終開封日： {{ item.LastUnsealDate }}
-              </td>
-              <v-spacer></v-spacer>
-              <!--ストック情報更新ダイアログ-->
-              <v-dialog v-model="editDialog" max-width="500px">
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn color="indigo" dark class="mx-2" fab v-bind="attrs" v-on="on" @click="editStock(item)">
-                    <v-icon dark large>
-                      mdi-pencil
-                    </v-icon>
-                  </v-btn>
-                </template>
-                <v-card>
-                  <v-card-title>
-                    <span class="text-h5">ストック情報更新：{{ item.StockerName }}</span>
-                  </v-card-title>
-                  <v-card-text>
-                    <v-container>
-                      <v-row>
-                        <v-col cols="12" sm="6" md="4">
-                          <v-text-field
-                            v-model="editedItem.StockerName"
-                            label="ストック品名"
-                            required
-                          ></v-text-field>
-                        </v-col>
-                        <v-col cols="12" sm="6" md="4">
-                          <v-combobox
-                            v-model="editedItem.Category"
-                            :items="categoryList"
-                            label="分類"
-                          ></v-combobox>
-                        </v-col>
-                        <v-col cols="12" sm="6" md="4">
-                          <v-select
-                            v-model.number="editedItem.NotifyThreshold"
-                            :items="numberItemsInclZero"
-                            label="通知閾値"
-                          ></v-select>
-                        </v-col>
-                      </v-row>
-                    </v-container>
-                  </v-card-text>
+                <v-spacer></v-spacer>
+                <!--ストック情報更新ダイアログ-->
+                <v-dialog v-model="editDialog" max-width="500px">
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn color="indigo" dark class="mx-2" fab v-bind="attrs" v-on="on" @click="editStock(item)">
+                      <v-icon dark large>
+                        mdi-pencil
+                      </v-icon>
+                    </v-btn>
+                  </template>
+                  <v-card>
+                    <v-card-title>
+                      <span class="text-h5">ストック情報更新：{{ item.StockerName }}</span>
+                    </v-card-title>
+                    <v-card-text>
+                      <v-container>
+                        <v-row>
+                          <v-col cols="12" sm="6" md="4">
+                            <v-text-field
+                              v-model="editedItem.StockerName"
+                              label="ストック品名"
+                            ></v-text-field>
+                          </v-col>
+                          <v-col cols="12" sm="6" md="4">
+                            <v-combobox
+                              v-model="editedItem.Category"
+                              :items="categoryList"
+                              label="分類"
+                            ></v-combobox>
+                          </v-col>
+                          <v-col cols="12" sm="6" md="4">
+                            <v-select
+                              v-model.number="editedItem.NotifyThreshold"
+                              :items="numberItemsInclZero"
+                              label="通知閾値"
+                            ></v-select>
+                          </v-col>
+                        </v-row>
+                      </v-container>
+                    </v-card-text>
 
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" text @click="closeEditDialog">キャンセル</v-btn>
-                    <v-btn color="blue darken-1" text @click="edit">更新</v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="blue darken-1" text @click="closeEditDialog">キャンセル</v-btn>
+                      <v-btn color="blue darken-1" text @click="edit">更新</v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </td>
             </template>
           </v-data-table>
         </v-container>
