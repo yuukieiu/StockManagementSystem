@@ -15,16 +15,9 @@ function getStockList() {
   var stockList = response.getContentText();
   var stockListJson = JSON.parse(JSON.stringify(stockList));
   return stockListJson.stockerList;
-  //return stockList;
 }
 
 function doGet(e) {
-//  var page = (e.parameter.p || "index");
-//  return htmlOutput = HtmlService.createTemplateFromFile(page)
-//      .evaluate()
-//      .setTitle("ストック管理クライアント")
-//      .addMetaTag('viewport', 'width=device-width,initial-scale=1');
-
   var t = HtmlService.createTemplateFromFile('index');
   return t.evaluate()
         .setTitle('ストック管理クライアント')
