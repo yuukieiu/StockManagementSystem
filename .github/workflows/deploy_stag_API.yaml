@@ -1,0 +1,44 @@
+name: Deploy_Staging
+
+on:
+  push:
+    paths:
+      - 'src/API/*' #pushを検知したいパスを書く
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      ID_TOKEN: ${{ secrets.ID_TOKEN }}
+      REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
+      CLIENT_ID: ${{ secrets.CLIENT_ID }}
+      CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+      SCRIPT_ID: ${{ secrets.STAG_SCRIPT_ID_API }}
+      DEPLOYMENT_ID: ${{ secrets.STAG_DEPLOYMENT_ID_API }}
+
+    steps:
+      - name: Setup repository
+        uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12'
+
+      - name: Install Clasp
+        run: sudo npm install -g @google/clasp
+
+      - name: Generate ~/.clasprc.json
+        run: |
+          bash deployment/setup.sh
+      - name: Generate ~/.clasp.json
+        run: |
+          bash deployment/setup_claspjson_API.sh
+      - name: Push
+        run: |
+          clasp push --force
+      - name: DEPLOY
+        run: |
+          clasp deploy --deploymentId $DEPLOYMENT_ID
