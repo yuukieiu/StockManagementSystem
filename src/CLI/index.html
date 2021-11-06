@@ -312,7 +312,11 @@
               <!--ストック情報更新ダイアログ-->
               <v-dialog v-model="editDialog" max-width="500px">
                 <template v-slot:activator="{ on, attrs }">
-                  <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on" @click="editStock(item)">ストック情報更新</v-btn>
+                  <v-btn color="indigo" dark class="mx-2" fab v-bind="attrs" v-on="on" @click="editStock(item)">
+                    <v-icon dark>
+                      mdi-pencil
+                    </v-icon>
+                  </v-btn>
                 </template>
                 <v-card>
                   <v-card-title>
