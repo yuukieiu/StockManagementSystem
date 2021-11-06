@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Material+Icons" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://unpkg.com/vuejs-datepicker"></script>
+  <style>
+    .v-data-table td {
+        background: #2c2c2c;
+    }
+    .v-data-table tr:nth-child(odd) td {
+        background: #212121;
+    }
+    .v-data-table tr:hover td {
+        background-color: #546E7A;
+    }
+    </style>
+</head>
+<body>
+  <div id="app">
+    <v-app>
+      <v-main>
+        <v-app-bar fixed app dense dark elevation=4>
+          <v-app-bar-nav-icon class="d-flex d-sm-none" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+          <v-toolbar-title>ストック管理クライアント</v-toolbar-title>
+          <v-spacer></v-spacer>
+            <p class="d-none d-sm-flex"><?=ACTIVE_USER?>として実行中</p>
+        </v-app-bar>
+
+        <v-navigation-drawer
+          v-model="drawer"
+          absolute
+          temporary
+        >
+          <v-list-item>
+            <v-list-item-content>
+              <v-list-item-title>実行中ユーザ</v-list-item-title>
+              <v-list-item-subtitle><?=ACTIVE_USER?></v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </v-navigation-drawer>
+
+
+        <v-snackbar
+          v-model="snackbar"
+          :timeout="timeout"
+          top
+        >
+          {{ this.snackbarText }}
+
+          <template v-slot:action="{ attrs }">
+            <v-btn
+              color="blue"
+              text
+              v-bind="attrs"
+              @click="snackbar = false"
+            >
+              Close
+            </v-btn>
+          </template>
+        </v-snackbar>
+
+        <v-overlay :value="overlay">
+          <v-progress-circular
+            indeterminate
+            size="64"
+          ></v-progress-circular>
+        </v-overlay>
+
+        <v-container>
+          <v-data-table
+            v-model="selected"
+            :headers="headers"
+            :items="stockerList"
+            :items-per-page="-1"
+            :single-select="true"
+            item-key="StockerName"
+            class="elevation-1"
+            :loading="loading"
+            loading-text="Loading... Please wait"
+            :search="search"
+            dense
+            fixed-header
+            :height="$vuetify.breakpoint.height - 138"
+            hide-default-footer
+            show-expand
+            :single-expand="true"
+            group-by="Category"
+            show-group-by
+            :mobile-breakpoint="0"
+          >
+
+            <template v-slot:top>
+              <v-toolbar
+                flat
+              >
+                <v-toolbar-title class="d-none d-sm-flex">ストック品一覧</v-toolbar-title>
+                <v-divider class="mx-4 d-none d-sm-flex" inset vertical></v-divider>
+                <v-spacer class="d-none d-sm-flex"></v-spacer>
+
+                <v-text-field
+                  v-model="search"
+                  append-icon="mdi-magnify"
+                  label="Search"
+                  single-line
+                  hide-details
+                  class="px-4"
+                ></v-text-field>
+
+                <!--ストック品追加ダイアログ-->
+                <v-dialog v-model="createDialog" max-width="500px">
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on" @click="openCreateDialog">ストック品追加</v-btn>
+                  </template>
+                  <v-card>
+                    <v-card-title>
+                      <span class="text-h5">ストック品追加</span>
+                    </v-card-title>
+                    <v-card-text>
+                      <v-container>
+                        <v-row>
+                          <v-col cols="12" sm="6" md="4">
+                            <v-text-field
+                              v-model="editedItem.StockerName"
+                              label="ストック品名（必須）"
+                            ></v-text-field>
+                          </v-col>
+                          <v-col cols="12" sm="6" md="4">
+                            <v-combobox
+                              v-model="editedItem.Category"
+                              :items="categoryList"
+                              label="分類（必須）"
+                            ></v-combobox>
+                          </v-col>
+                          <v-col cols="12" sm="6" md="4">
+                            <v-text-field
+                              v-model.number="editedItem.StockCount"
+                              label="ストック数"
+                            ></v-text-field>
+                          </v-col>
+                          <v-col cols="12" sm="6" md="4">
+                            <v-menu
+                              v-model="lastByDateMenu"
+                              :close-on-content-click="false"
+                              :nudge-right="40"
+                              transition="scale-transition"
+                              offset-y
+                              min-width="auto"
+                            >
+                            <template v-slot:activator="{ on, attrs }">
+                              <v-text-field
+                                v-model="editedItem.LastBuyDate"
+                                label="最終購入日"
+                                prepend-icon="mdi-calendar"
+                                v-bind="attrs"
+                                v-on="on"
+                                readonly
+                              >
+                              </v-text-field>
+                            </template>
+                            <v-date-picker v-model="editedItem.LastBuyDate" @input="lastByDateMenu = false"/>
+                          </v-col>
+                          <v-col cols="12" sm="6" md="4">
+                            <v-menu
+                              v-model="lastUnsealDateMenu"
+                              :close-on-content-click="false"
+                              :nudge-right="40"
+                              transition="scale-transition"
+                              offset-y
+                              min-width="auto"
+                            >
+                            <template v-slot:activator="{ on, attrs }">
+                              <v-text-field
+                                v-model="editedItem.LastUnsealDate"
+                                label="最終開封日"
+                                prepend-icon="mdi-calendar"
+                                v-bind="attrs"
+                                v-on="on"
+                                readonly
+                              >
+                              </v-text-field>
+                            </template>
+                            <v-date-picker v-model="editedItem.LastUnsealDate" @input="lastUnsealDateMenu = false"/>
+                          </v-col>
+                          <v-col cols="12" sm="6" md="4">
+                            <v-text-field
+                              v-model.number="editedItem.NotifyThreshold"
+                              label="通知閾値"
+                            ></v-text-field>
+                          </v-col>
+                        </v-row>
+                      </v-container>
+                    </v-card-text>
+
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="blue darken-1" text @click="closeCreateDialog">キャンセル</v-btn>
+                      <v-btn color="blue darken-1" text @click="create">作成</v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+
+                <!--ストック追加ダイアログ-->
+                <v-dialog v-model="addDialog" max-width="500px">
+                  <v-card>
+                    <v-card-title>
+                      <span class="text-h5">ストック追加</span>
+                    </v-card-title>
+
+                    <v-card-text>
+                      <v-container>
+                        <v-row>
+                          <v-col cols="12" sm="6" md="4">
+                            <v-text-field
+                              v-model.number="editedItem.StockCount"
+                              label="追加ストック数"
+                            ></v-text-field>
+                          </v-col>
+                        </v-row>
+                      </v-container>
+                    </v-card-text>
+
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="blue darken-1" text @click="closeAddDialog">キャンセル</v-btn>
+                      <v-btn color="blue darken-1" text @click="addStockConfirm">追加</v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+
+                <!--ストック使用ダイアログ-->
+                <v-dialog v-model="subDialog" max-width="500px">
+                  <v-card>
+                    <v-card-title>
+                      <span class="text-h5">ストック使用</span>
+                    </v-card-title>
+
+                    <v-card-text>
+                      <v-container>
+                        <v-row>
+                          <v-col cols="12" sm="6" md="4">
+                            <v-text-field
+                              v-model.number="editedItem.StockCount"
+                              label="使用ストック数"
+                            ></v-text-field>
+                          </v-col>
+                        </v-row>
+                      </v-container>
+                    </v-card-text>
+
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="blue darken-1" text @click="closeSubDialog">キャンセル</v-btn>
+                      <v-btn color="blue darken-1" text @click="subStockConfirm">使用</v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+
+                <!--ストック品削除ダイアログ-->
+                <v-dialog v-model="deleteDialog" max-width="500px">
+                  <v-card>
+                    <v-card-title class="text-h5">削除しますか？</v-card-title>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="blue darken-1" text @click="closeDeleteDialog">キャンセル</v-btn>
+                      <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
+                      <v-spacer></v-spacer>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+
+              </v-toolbar>
+            </template>
+
+            <!--操作アイコン-->
+            <template v-slot:item.actions="{ item }">
+              <v-icon
+                large
+                @click="addStock(item)"
+              >
+                add_circle_outline
+              </v-icon>
+              <v-icon
+                large
+                @click="subStock(item)"
+              >
+                remove_circle_outline
+              </v-icon>
+              <v-icon
+                large
+                @click="deleteStock(item)"
+              >
+                delete
+              </v-icon>
+            </template>
+            <template v-slot:no-data>
+              データなし
+            </template>
+            <template v-slot:expanded-item="{ headers, item }">
+              <td :colspan="headers.length">
+                分類： {{ item.Category }} 最終購入日： {{ item.LastBuyDate }} 最終開封日： {{ item.LastUnsealDate }}
+              </td>
+            </template>
+          </v-data-table>
+        </v-container>
+      </v-main>
+    </v-app>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      vuetify: new Vuetify({
+        theme: { dark: true },
+      }),
+      components: {
+        'vuejs-datepicker':vuejsDatepicker
+      },
+      data: () => ({
+        selected: [],
+        stockerList: [],
+        categoryList: [],
+        loading: true,
+        createDialog: false,
+        addDialog: false,
+        subDialog: false,
+        deleteDialog: false,
+        lastByDateMenu: false,
+        lastUnsealDateMenu: false,
+        snackbar: false,
+        snackbarText: 'Test',
+        timeout: 2000,
+        overlay: false,
+        search: '',
+        drawer: false,
+        headers: [
+          { text: '品名', value: 'StockerName' , groupable: false},
+          { text: '分類', value: 'Category' , groupable: true},
+          { text: 'ストック数', value: 'StockCount' , groupable: false},
+          //{ text: '最終購入日', value: 'LastBuyDate' },
+          //{ text: '最終開封日', value: 'LastUnsealDate' },
+          { text: '通知閾値', value: 'NotifyThreshold', sortable: false, groupable: false},
+          { text: '操作', value: 'actions', sortable: false , groupable: false},
+          { text: '', value: 'data-table-expand', sortable: false , groupable: false },
+        ],
+        editedIndex: -1,
+        editedItem: {
+          StockerName: '',
+          StockCount: 0,
+          Category: '',
+          LastBuyDate: (new Date()).toISOString().substr(0, 10),
+          LastUnsealDate: (new Date()).toISOString().substr(0, 10),
+          NotifyThreshold: 0,
+        },
+        defaultItem: {
+          StockerName: '',
+          StockCount: 0,
+          Category: '',
+          LastBuyDate: (new Date()).toISOString().substr(0, 10),
+          LastUnsealDate: (new Date()).toISOString().substr(0, 10),
+          NotifyThreshold: 0,
+        },
+      }),
+
+      watch: {
+        createDialog (val) {
+          val || this.closeCreateDialog()
+        },
+        addDialog (val) {
+          val || this.closeAddDialog()
+        },
+        subDialog (val) {
+          val || this.closeSubDialog()
+        },
+        deleteDialog (val) {
+          val || this.closeDeleteDialog()
+        }
+      },
+
+      created: function(){
+        this.initialize()
+      },
+
+      methods: {
+        async initialize () {
+          let vm = this
+          vm.loading = true
+          await axios.get('<?=TARGET_URL?>')
+            .then(response => {
+              vm.stockerList = response.data
+            })
+            .finally(() => vm.loading = false)
+        },
+
+        addStock (item) {
+          this.editedIndex = this.stockerList.indexOf(item)
+          this.editedItem = Object.assign({}, item)
+          this.editedItem.StockCount = 1
+          this.addDialog = true
+        },
+
+        closeAddDialog () {
+          this.addDialog = false
+          this.$nextTick(() => {
+            this.editedItem = Object.assign({}, this.defaultItem)
+            this.editedIndex = -1
+          })
+        },
+        async addStockConfirm (item) {
+          //alert('追加するよ')
+          var params = JSON.stringify({
+            encryptedEmail: '<?=ENCRYPTED_ACTIVE_USER?>',
+            method: 'push',
+            stocker: {
+              name: this.editedItem.StockerName,
+              count: this.editedItem.StockCount
+            }
+          });
+          //alert('以下のデータを送信するよ。\n' + params)
+          this.closeAddDialog()
+          await this.postRequest(params)
+          this.initialize()
+        },
+
+        subStock (item) {
+          this.editedIndex = this.stockerList.indexOf(item)
+          this.editedItem = Object.assign({}, item)
+          this.editedItem.StockCount = 1
+          this.subDialog = true
+        },
+
+        closeSubDialog () {
+          this.subDialog = false
+          this.$nextTick(() => {
+            this.editedItem = Object.assign({}, this.defaultItem)
+            this.editedIndex = -1
+          })
+        },
+
+        async subStockConfirm (item) {
+          //alert('使用するよ')
+          var params = JSON.stringify({
+            encryptedEmail: '<?=ENCRYPTED_ACTIVE_USER?>',
+            method: 'pop',
+            stocker: {
+              name: this.editedItem.StockerName,
+              count: this.editedItem.StockCount
+            }
+          });
+          //alert('以下のデータを送信するよ。\n' + params)
+          this.closeSubDialog()
+          await this.postRequest(params)
+          this.initialize()
+        },
+
+        deleteStock (item) {
+          this.editedIndex = this.stockerList.indexOf(item)
+          this.editedItem = Object.assign({}, item)
+          this.deleteDialog = true
+        },
+
+        async deleteItemConfirm () {
+          //alert('削除するよ')
+          var params = JSON.stringify({
+            encryptedEmail: '<?=ENCRYPTED_ACTIVE_USER?>',
+            method: 'delete',
+            stocker: {
+              name: this.editedItem.StockerName
+            }
+          });
+          //alert('以下のデータを送信するよ。\n' + params)
+          this.closeDeleteDialog()
+          await this.postRequest(params)
+          this.initialize()
+        },
+
+        closeCreateDialog () {
+          this.createDialog = false
+          this.$nextTick(() => {
+            this.editedItem = Object.assign({}, this.defaultItem)
+            this.editedIndex = -1
+          })
+        },
+
+        closeDeleteDialog () {
+          this.deleteDialog = false
+          this.$nextTick(() => {
+            this.editedItem = Object.assign({}, this.defaultItem)
+            this.editedIndex = -1
+          })
+        },
+
+        async create () {
+          var params = JSON.stringify({
+            encryptedEmail: '<?=ENCRYPTED_ACTIVE_USER?>',
+            method: 'create',
+            stocker: {
+              name: this.editedItem.StockerName,
+              category: this.editedItem.Category,
+              count: this.editedItem.StockCount,
+              lastbuydate: this.editedItem.LastBuyDate,
+              lastunsealdate: this.editedItem.LastUnsealDate,
+              notifythreshold: this.editedItem.NotifyThreshold
+            }
+          });
+          //alert('以下のデータを送信するよ。\n' + params)
+          this.closeCreateDialog()
+          await this.postRequest(params)
+          this.initialize()
+        },
+
+        async postRequest(params) {
+          this.overlay = true
+          const promise = axios.post('<?=TARGET_URL?>', params)
+          const response = await promise;
+          this.snackbarText = response.data.message
+          this.snackbar = true
+          this.overlay = false
+        },
+
+        async openCreateDialog() {
+          await axios.get('<?=TARGET_URL_GETCATEGORY?>')
+            .then(response => {
+              this.categoryList = response.data
+            })
+        }
+      }
+    })
+  </script>
+</body>
+</html>

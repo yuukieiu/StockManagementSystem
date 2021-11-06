@@ -1,0 +1,32 @@
+const TARGET_URL = PropertiesService.getScriptProperties().getProperty("TARGET_URL");
+
+const TARGET_URL_GETCATEGORY = TARGET_URL + "?p1=getcat";
+
+const CLIENT_URL = ScriptApp.getService().getUrl();
+
+const ACTIVE_USER = Session.getActiveUser().getEmail();
+
+const ENCRYPTED_ACTIVE_USER = Utilities.base64EncodeWebSafe(Session.getActiveUser().getEmail());
+
+var list;
+
+function getStockList() {
+  var response = UrlFetchApp.fetch(TARGET_URL);
+  var stockList = response.getContentText();
+  var stockListJson = JSON.parse(JSON.stringify(stockList));
+  return stockListJson.stockerList;
+  //return stockList;
+}
+
+function doGet(e) {
+//  var page = (e.parameter.p || "index");
+//  return htmlOutput = HtmlService.createTemplateFromFile(page)
+//      .evaluate()
+//      .setTitle("ストック管理クライアント")
+//      .addMetaTag('viewport', 'width=device-width,initial-scale=1');
+
+  var t = HtmlService.createTemplateFromFile('index');
+  return t.evaluate()
+        .setTitle('ストック管理クライアント')
+        .addMetaTag('viewport', 'width=device-width,initial-scale=1,minimal-ui');
+}

@@ -1,0 +1,191 @@
+// ------------------------
+// ストック品登録
+// ------------------------
+function registerStocker(stockName, stockCount = 0, lastBuyDate = null, lastUnsealDate = null, notifyThreshold = 0, category) {
+    const functionName = "ストック品登録";
+    writeStartLog(functionName);
+
+    // なにもなければ正常終了
+    var returnValue = {
+        status  : true,
+        message : "success!!"
+    }
+
+    try {
+        var result = createStocker(stockName, stockCount, lastBuyDate, lastUnsealDate, notifyThreshold, category)
+    } catch (e) {
+        returnValue.status = false;
+        switch(e.message) {
+            case DB_EMPTY_STOCKERNAME_EXCEPTION:
+                returnValue.message = "ストック名が設定されていないため登録できませんでした。";
+                break;
+            case DB_EMPTY_CATEGORY_EXCEPTION:
+                returnValue.message = "分類が設定されていないため登録できませんでした。";
+                break;
+            case DB_DUPLICATE_STOCKERNAME_EXCEPTION:
+                returnValue.message = "ストック名が重複したため登録できませんでした。ストック名：" + stockName;
+                break;
+            default:
+                returnValue.message = "予期せぬエラーによりストック品を登録できませんでした。データ：" + stockName + "," + stockCount + "," + lastBuyDate + "," + lastUnsealDate + "," + notifyThreshold;
+                break;
+        }
+        warnLog(functionName, returnValue.message);
+    }
+
+    writeEndLog(functionName);
+    return returnValue;
+  }
+
+  // ------------------------
+  // ストック品一覧取得
+  // ------------------------
+  function getStockerList() {
+    const functionName = "ストック品一覧取得";
+    writeStartLog(functionName);
+
+    var stockerList = new Array();
+    stockerList = getStockAll();
+
+    writeEndLog(functionName);
+    return stockerList;
+  }
+
+  // ------------------------
+  // 分類一覧取得
+  // ------------------------
+  function getCategoryList() {
+    const functionName = "分類一覧取得";
+    writeStartLog(functionName);
+
+    var categoryList = new Array();
+    categoryList = getCategoryAll();
+
+    writeEndLog(functionName);
+    return categoryList;
+  }
+
+  // ------------------------
+  // ストック追加
+  // ------------------------
+  function addStock(stockName, stockCount = 0) {
+    const functionName = "ストック追加";
+    writeStartLog(functionName);
+
+    // なにもなければ正常終了
+    var returnValue = {
+        status  : true,
+        message : "success!!"
+    }
+
+    try {
+        var result = addStockCount(stockName, stockCount);
+    } catch (e) {
+        returnValue.status = false;
+        switch(e.message) {
+            case DB_EMPTY_STOCK_OBJECT_EXCEPTION:
+                returnValue.message = "指定のストックが存在しないためストック追加できませんでした。ストック名：" + stockName;
+                break;
+            default:
+                returnValue.message = "ストックを追加できませんでした。データ：" + stockName + "," + stockCount;
+                break;
+        }
+        warnLog(functionName, returnValue.message);
+    }
+
+    writeEndLog(functionName);
+    return returnValue;
+  }
+
+  // ------------------------
+  // ストック使用
+  // ------------------------
+  function useStock(stockName, stockCount = 0) {
+    const functionName = "ストック使用";
+    writeStartLog(functionName);
+
+    // なにもなければ正常終了
+    var returnValue = {
+        status  : true,
+        message : "success!!"
+    }
+
+    try {
+        var result = subStockCount(stockName, stockCount);
+    } catch (e) {
+        returnValue.status = false;
+        switch(e.message) {
+            case DB_EMPTY_STOCK_OBJECT_EXCEPTION:
+                returnValue.message = "指定のストックが存在しないためストック使用できませんでした。";
+                break;
+            case DB_NOT_ENOUGH_TO_USE_STOCK_EXCEPTION:
+                returnValue.message = "ストック数不足のためためストック使用できませんでした。";
+                break;
+            default:
+                returnValue.message = "ストック使用できませんでした。データ：" + stockName + "," + stockCount;
+                break;
+        }
+        warnLog(functionName, returnValue.message);
+    }
+
+    writeEndLog(functionName);
+    return returnValue;
+  }
+
+  // ------------------------
+  // ストック品削除
+  // ------------------------
+  function deleteStocker(stockName) {
+    const functionName = "ストック品削除";
+    writeStartLog(functionName);
+
+    // なにもなければ正常終了
+    var returnValue = {
+        status  : true,
+        message : "success!!"
+    }
+
+    try {
+        var result = deleteStockByName(stockName);
+    } catch (e) {
+        returnValue.status = false;
+        switch(e.message) {
+            case DB_EMPTY_STOCK_OBJECT_EXCEPTION:
+                returnValue.message = "指定のストックが存在しないためストック品削除できませんでした。";
+                break;
+            default:
+                returnValue.message = "ストック品削除できませんでした。データ：" + stockName;
+                break;
+        }
+        warnLog(functionName, returnValue.message);
+    }
+
+    writeEndLog(functionName);
+    return returnValue;
+  }
+
+  // ------------------------
+  // ストック閾値チェック(個別)
+  // ------------------------
+  function checkStockCount(stockerName = "") {
+    const functionName = "ストック閾値チェック(個別)";
+    writeStartLog(functionName);
+
+    var returnValue = {
+        status  : true,
+        message : "success!!"
+    }
+    var stock = getStockByName(stockerName);
+    if (stock == null) {
+      errorlog(functionName,"ストックがないか複数件あります。");
+      throw new Error(CANT_CHECK_STOCK_COUNT_EXCEPTION);
+    } else {
+      var notifyThreshold = getValueInCell(NOTIFY_THRESHOLD,stock.RowIndex);
+      var stockCount = getValueInCell(STOCKER_COUNT,stock.RowIndex);
+      if (notifyThreshold >= stockCount) {
+        returnValue.status = false;
+      }
+    }
+
+    writeEndLog(functionName);
+    return returnValue;
+  }
