@@ -11,15 +11,16 @@ const DATA_START_ROW = 2;
 // 通知対象ストック品リスト取得
 // ------------------------
 function getNotifyStockList() {
-  var result = new Array();
-  for (var i = DATA_START_ROW; i <= Stocker.getLastRow(); i++) {
+  var result = [];
+  var stockerArrays = Stocker.getRange(DATA_START_ROW,GetItemColumnNum(STOCKER_NAME),Stocker.getLastRow()-1,GetItemColumnNum(CATEGORY)).getValues();
+  for (var i = 0; i < stockerArrays.length; i++) {
     var stock = {
-      StockerName     : getValueInCell(STOCKER_NAME, i),      // ストック品名
-      StockCount      : getValueInCell(STOCKER_COUNT, i),     // ストック数
-      LastBuyDate     : Utilities.formatDate(getValueInCell(LAST_BUY_DATE, i),"JST", "yyyy/MM/dd"),     // 最終購入日
-      LastUnsealDate  : Utilities.formatDate(getValueInCell(LAST_UNSEAL_DATE, i),"JST", "yyyy/MM/dd"),  // 最終開封日
-      NotifyThreshold : getValueInCell(NOTIFY_THRESHOLD, i),  // 通知閾値
-      Category        : getValueInCell(CATEGORY, i),          // 分類
+      StockerName     : stockerArrays[i][GetItemColumnNum(STOCKER_NAME)-1],      // ストック品名
+      StockCount      : stockerArrays[i][GetItemColumnNum(STOCKER_COUNT)-1],     // ストック数
+      LastBuyDate     : Utilities.formatDate(stockerArrays[i][GetItemColumnNum(LAST_BUY_DATE)-1],"JST", "yyyy/MM/dd"),     // 最終購入日
+      LastUnsealDate  : Utilities.formatDate(stockerArrays[i][GetItemColumnNum(LAST_UNSEAL_DATE)-1],"JST", "yyyy/MM/dd"),  // 最終開封日
+      NotifyThreshold : stockerArrays[i][GetItemColumnNum(NOTIFY_THRESHOLD)-1],  // 通知閾値
+      Category        : stockerArrays[i][GetItemColumnNum(CATEGORY)-1],          // 分類
       RowIndex        : i
     }
     if (stock.StockCount <= stock.NotifyThreshold) {
