@@ -11,7 +11,7 @@ function sendLINE() {
         "Authorization" : "Bearer "+ token
       },
       "payload" : {
-        "message" : messageText
+        "message" : "\n" +messageText
       }
     }
 
@@ -24,7 +24,7 @@ function createNotifyMessage() {
 
   // メッセージ作成
   var today = new Date();
-  messageText = messageText + "\n■" + today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate() + " ストック閾値到達品一覧\n品名：ストック数\n";
+  messageText = messageText + "■" + today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate() + " ストック閾値到達品一覧\n品名：ストック数\n";
   var notifyStocks = getNotifyStockList();
   // 分類でソート
   notifyStocks.sort(function(a,b) {

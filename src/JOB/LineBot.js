@@ -2,7 +2,6 @@
 var ACCESS_TOKEN = PropertiesService.getScriptProperties().getProperty("LINE_MESSAGING_ACCESS_TOKEN");
 
 function doPost(e) {
-  console.info(JSON.parse(e.postData.contents));
   // WebHookで受信した応答用Token
   var replyToken = JSON.parse(e.postData.contents).events[0].replyToken;
   // ユーザーのメッセージを取得
@@ -10,7 +9,7 @@ function doPost(e) {
   // 応答メッセージ用のAPI URL
   var url = 'https://api.line.me/v2/bot/message/reply';
 
-  //if (userMessage != "ストック集計") {return ContentService.createTextOutput(JSON.stringify({'content': 'post ok'})).setMimeType(ContentService.MimeType.JSON);;}
+  if (userMessage != "ストック集計") {return ContentService.createTextOutput(JSON.stringify({'content': 'post ok'})).setMimeType(ContentService.MimeType.JSON);;}
   // 通知内容一覧作成
   let messageText = ""
   messageText = createNotifyMessage();
