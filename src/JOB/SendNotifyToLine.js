@@ -5,22 +5,21 @@ function sendLINE() {
     // LINEから取得したトークン
     //let token = PropertiesService.getScriptProperties().getProperty("LINE_TOKEN_TEST"); // テスト用（1:1でじぶんに送る）
     let token = PropertiesService.getScriptProperties().getProperty("LINE_MESSAGING_ACCESS_TOKEN");
-    let options = {
-      "method" : "post",
-      "headers" : {
+
+    let url = "https://api.line.me/v2/bot/message/broadcast";
+    UrlFetchApp.fetch(url, {
+      'headers': {
         'Content-Type': 'application/json; charset=UTF-8',
-        "Authorization" : "Bearer "+ token
+        'Authorization': 'Bearer ' + ACCESS_TOKEN,
       },
-      "payload" : {
+      'method': 'post',
+      'payload': JSON.stringify({
         'messages': [{
           'type': 'text',
           'text': messageText,
-        }]
-      }
-    }
-
-    let url = "https://api.line.me/v2/bot/message/broadcast";
-    UrlFetchApp.fetch(url, options)
+        }],
+      }),
+      });
    }
 
 function createNotifyMessage() {
