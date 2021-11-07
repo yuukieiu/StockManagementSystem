@@ -8,6 +8,7 @@ function sendLINE() {
     let options = {
       "method" : "post",
       "headers" : {
+        'Content-Type': 'application/json; charset=UTF-8',
         "Authorization" : "Bearer "+ token
       },
       "payload" : {
