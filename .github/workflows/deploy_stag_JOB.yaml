@@ -16,6 +16,7 @@ jobs:
       CLIENT_ID: ${{ secrets.CLIENT_ID }}
       CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
       SCRIPT_ID: ${{ secrets.STAG_SCRIPT_ID_JOB }}
+      DEPLOYMENT_ID: ${{ secrets.STAG_DEPLOYMENT_ID_JOB }}
 
     steps:
       - name: Setup repository
@@ -38,3 +39,6 @@ jobs:
       - name: Push
         run: |
           clasp push --force
+      - name: DEPLOY
+        run: |
+          clasp deploy --deploymentId $DEPLOYMENT_ID
