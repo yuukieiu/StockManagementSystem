@@ -12,7 +12,7 @@ function doPost(e) {
   if (userMessage != "ストック集計") {return ContentService.createTextOutput(JSON.stringify({'content': 'post ok'})).setMimeType(ContentService.MimeType.JSON);;}
   // 通知内容一覧作成
   let messageText = "ストック集計を実行しました。\n"
-  messageText = createNotifyMessage();
+  messageText = messageText + createNotifyMessage();
 
   UrlFetchApp.fetch(url, {
     'headers': {

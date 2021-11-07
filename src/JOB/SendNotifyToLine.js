@@ -1,6 +1,6 @@
 function sendLINE() {
     let messageText = "週次のストック集計が実行されました。\n"
-    messageText = createNotifyMessage();
+    messageText = messageText + createNotifyMessage();
 
     // LINEから取得したトークン
     let token = PropertiesService.getScriptProperties().getProperty("LINE_MESSAGING_ACCESS_TOKEN");
