@@ -52,7 +52,7 @@ function createNotifyMessage() {
     }
     if (currentLastUnsealDate != notifyStocks[i].LastUnsealDate) {
       currentLastUnsealDate = notifyStocks[i].LastUnsealDate;
-      messageText = messageText + "\n 最終開封日：" + currentLastUnsealDate + "\n";
+      messageText = messageText + " 最終開封日：" + currentLastUnsealDate + "\n";
     }
     messageText = messageText + "  " + notifyStocks[i].StockerName + "：" + notifyStocks[i].StockCount + "\n";
   }
