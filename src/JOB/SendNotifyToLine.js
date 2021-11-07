@@ -1,9 +1,8 @@
 function sendLINE() {
-    let messageText = ""
+    let messageText = "週次のストック集計が実行されました。\n"
     messageText = createNotifyMessage();
 
     // LINEから取得したトークン
-    //let token = PropertiesService.getScriptProperties().getProperty("LINE_TOKEN_TEST"); // テスト用（1:1でじぶんに送る）
     let token = PropertiesService.getScriptProperties().getProperty("LINE_MESSAGING_ACCESS_TOKEN");
 
     let url = "https://api.line.me/v2/bot/message/broadcast";
