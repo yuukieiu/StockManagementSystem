@@ -26,7 +26,7 @@ function createNotifyMessage() {
 
   // メッセージ作成
   var today = new Date();
-  messageText = messageText + "■" + today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate() + " ストック閾値到達品一覧\n品名：ストック数\n";
+  messageText = messageText + "■" + today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate() + " ストック閾値到達品一覧\n品名：ストック数:最終開封日\n";
   var notifyStocks = getNotifyStockList();
   // 分類でソート
   notifyStocks.sort(function(a,b) {
@@ -45,7 +45,7 @@ function createNotifyMessage() {
       currentCategory = notifyStocks[i].Category;
       messageText = messageText + "\n分類：" + currentCategory + "\n";
     }
-    messageText = messageText + "　" + notifyStocks[i].StockerName + "：" + notifyStocks[i].StockCount + "\n";
+    messageText = messageText + "  " + notifyStocks[i].StockerName + "：" + notifyStocks[i].StockCount + ":" + notifyStocks[i].LastUnsealDate + "\n";
   }
 
   messageText = messageText + "以上"
