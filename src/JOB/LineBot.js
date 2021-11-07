@@ -9,7 +9,7 @@ function doPost(e) {
   // 応答メッセージ用のAPI URL
   var url = 'https://api.line.me/v2/bot/message/reply';
 
-  if (userMessage != "ストック集計") {return ContentService.createTextOutput(JSON.stringify({'content': 'post ok'})).setMimeType(ContentService.MimeType.JSON);;}
+  //if (userMessage != "ストック集計") {return ContentService.createTextOutput(JSON.stringify({'content': 'post ok'})).setMimeType(ContentService.MimeType.JSON);;}
   // 通知内容一覧作成
   let messageText = ""
   messageText = createNotifyMessage();
