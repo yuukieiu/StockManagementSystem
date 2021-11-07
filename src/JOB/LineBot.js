@@ -2,6 +2,7 @@
 var ACCESS_TOKEN = PropertiesService.getScriptProperties().getProperty("LINE_MESSAGING_ACCESS_TOKEN");
 
 function doPost(e) {
+  console.info(JSON.parse(e.postData.contents));
   // WebHookで受信した応答用Token
   var replyToken = JSON.parse(e.postData.contents).events[0].replyToken;
   // ユーザーのメッセージを取得
