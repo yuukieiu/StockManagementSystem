@@ -54,7 +54,7 @@ function createNotifyMessage() {
       currentLastUnsealDate = notifyStocks[i].LastUnsealDate;
       messageText = messageText + "\n 最終開封日：" + currentLastUnsealDate + "\n";
     }
-    messageText = messageText + "  " + notifyStocks[i].LastUnsealDate + "：" + notifyStocks[i].StockerName + "：" + notifyStocks[i].StockCount + "\n";
+    messageText = messageText + "  " + notifyStocks[i].StockerName + "：" + notifyStocks[i].StockCount + "\n";
   }
 
   messageText = messageText + "以上"
