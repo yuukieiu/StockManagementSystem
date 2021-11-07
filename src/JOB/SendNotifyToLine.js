@@ -4,18 +4,21 @@ function sendLINE() {
 
     // LINEから取得したトークン
     //let token = PropertiesService.getScriptProperties().getProperty("LINE_TOKEN_TEST"); // テスト用（1:1でじぶんに送る）
-    let token = PropertiesService.getScriptProperties().getProperty("LINE_TOKEN");
+    let token = PropertiesService.getScriptProperties().getProperty("LINE_MESSAGING_ACCESS_TOKEN");
     let options = {
       "method" : "post",
       "headers" : {
         "Authorization" : "Bearer "+ token
       },
       "payload" : {
-        "message" : "\n" +messageText
+        'messages': [{
+          'type': 'text',
+          'text': messageText,
+        }]
       }
     }
 
-    let url  = "https://notify-api.line.me/api/notify"
+    let url = "https://api.line.me/v2/bot/message/broadcast";
     UrlFetchApp.fetch(url, options)
    }
 
