@@ -31,23 +31,14 @@ function createStocker(stockName, stockCount = 0, lastBuyDate = null, lastUnseal
   // 書き込み行取得
   var targetLow = Stocker.getLastRow() + 1;
 
-  // ストック品名書き込み
-  writeValueInCell(STOCKER_NAME, targetLow, stockName);
+  // ストックID作成
+  var stockerId = Utilities.getUuid();
+  while (Stocker.createTextFinder(id).findAll().length > 0) {
+    id = Utilities.getUuid();
+  }
 
-  // ストック数書き込み
-  writeValueInCell(STOCKER_COUNT, targetLow, stockCount);
-
-  // 最終購入日書き込み
-  writeValueInCell(LAST_BUY_DATE, targetLow, lastBuyDate);
-
-  // 現在の使用開始日書き込み
-  writeValueInCell(LAST_UNSEAL_DATE, targetLow, lastUnsealDate);
-
-  // 通知閾値書き込み
-  writeValueInCell(NOTIFY_THRESHOLD, targetLow, notifyThreshold);
-
-  // 分類書き込み
-  writeValueInCell(CATEGORY, targetLow, category);
+  // 配列化して1行書き込み
+  insertRowAtLast([id, stockName, stockCount, lastBuyDate, lastUnsealDate, notifyThreshold, category]);
 
   return result;
 }
@@ -61,6 +52,7 @@ function getStockAll() {
   var stockerArrays = Stocker.getRange(DATA_START_ROW,GetItemColumnNum(STOCKER_NAME),Stocker.getLastRow()-1,GetItemColumnNum(CATEGORY)).getValues();
   for (var i = 0; i < stockerArrays.length; i++) {
     var stock = {
+      StockerID       : stockerArrays[i][GetItemColumnNum(STOCKER_ID)-1],        // ストックID
       StockerName     : stockerArrays[i][GetItemColumnNum(STOCKER_NAME)-1],      // ストック品名
       StockCount      : stockerArrays[i][GetItemColumnNum(STOCKER_COUNT)-1],     // ストック数
       LastBuyDate     : Utilities.formatDate(stockerArrays[i][GetItemColumnNum(LAST_BUY_DATE)-1],"JST", "yyyy/MM/dd"),     // 最終購入日
@@ -94,7 +86,7 @@ function getCategoryAll() {
 // ------------------------
 function getStockByName(stockerName = "") {
   // ストック品名のみを指定し完全一致で検索
-  var stockerNameColumn = Stocker.getRange("A:A");
+  var stockerNameColumn = Stocker.getRange("B:B");
   var finder = stockerNameColumn.createTextFinder(stockerName)
                 .matchEntireCell(true);
   var result = finder.findAll();
@@ -105,6 +97,7 @@ function getStockByName(stockerName = "") {
     stock = null;
   } else {
     stock = {
+      StockerID       : getValueInCell(STOCKER_ID, result[0].getRowIndex()),        // ストックID
       StockerName     : getValueInCell(STOCKER_NAME, result[0].getRowIndex()),      // ストック品名
       StockCount      : getValueInCell(STOCKER_COUNT, result[0].getRowIndex()),     // ストック数
       LastBuyDate     : Utilities.formatDate(getValueInCell(LAST_BUY_DATE, result[0].getRowIndex()),"JST", "yyyy/MM/dd"),     // 最終購入日
@@ -167,6 +160,9 @@ function updateStockInfo(targetStockerName = "", newStockerName, newCategory, ne
   if (target == null) throw new Error(DB_EMPTY_STOCK_OBJECT_EXCEPTION);
 
   if (target.StockerName != newStockerName) {
+    // 重複チェック
+    var target = getStockByName(newStockerName);
+    if (target != null) throw new Error(DB_DUPLICATE_STOCKERNAME_EXCEPTION);
     writeValueInCell(STOCKER_NAME, target.RowIndex, newStockerName);
   }
   if (target.Category != newCategory) {
@@ -208,4 +204,11 @@ function writeValueInCell(itemName, row, value) {
 // ------------------------
 function getValueInCell(itemName, row) {
   return Stocker.getRange(row, GetItemColumnNum(itemName)).getValue();
+}
+
+// ------------------------
+// 1行書き込み（最終行）
+// ------------------------
+function insertRowAtLast(value = []) {
+  Stocker.appendRow(value);
 }

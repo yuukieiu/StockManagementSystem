@@ -3,6 +3,8 @@
 // ------------------------
 function GetDisplayItemName(itemName) {
     switch (itemName) {
+      case STOCKER_ID:
+        return DISP_STOCKER_ID;
       case STOCKER_NAME:
         return DISP_STOCKER_NAME;
       case STOCKER_COUNT:
@@ -25,6 +27,8 @@ function GetDisplayItemName(itemName) {
   // ------------------------
   function GetItemColumnNum(itemName) {
     switch (itemName) {
+      case STOCKER_ID:
+        return COLNUM_STOCKER_ID;
       case STOCKER_NAME:
         return COLNUM_STOCKER_NAME;
       case STOCKER_COUNT:
@@ -36,7 +40,7 @@ function GetDisplayItemName(itemName) {
       case NOTIFY_THRESHOLD:
         return COLNUM_NOTIFY_THRESHOLD;
       case CATEGORY:
-        return COLUMN_CATEGORY;
+        return COLNUM_CATEGORY;
       default:
         return 0;
     }
