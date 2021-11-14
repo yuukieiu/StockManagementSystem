@@ -188,8 +188,8 @@ function updateStockInfoById(targetStockerID = "", newStockerName, newCategory, 
 
   if (target.StockerName != newStockerName) {
     // 重複チェック
-    var target = getStockByName(newStockerName);
-    if (target != null) throw new Error(DB_DUPLICATE_STOCKERNAME_EXCEPTION);
+    var check = getStockByName(newStockerName);
+    if (check != null) throw new Error(DB_DUPLICATE_STOCKERNAME_EXCEPTION);
     writeValueInCell(STOCKER_NAME, target.RowIndex, newStockerName);
   }
   if (target.Category != newCategory) {
