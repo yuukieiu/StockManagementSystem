@@ -210,6 +210,9 @@ function updateStocker(targetStockerId = "", newStockerName, newCategory, newNot
         case DB_EMPTY_STOCK_OBJECT_EXCEPTION:
             returnValue.message = "指定のストックが存在しないためストック情報更新できませんでした。";
             break;
+        case DB_DUPLICATE_STOCKERNAME_EXCEPTION:
+            returnValue.message = "ストック名が重複しているため、更新できませんでした。ストック名：" + newStockerName;
+            break;
         default:
             returnValue.message = "ストック情報更新できませんでした。データ：" + targetStockerId;
             break;
