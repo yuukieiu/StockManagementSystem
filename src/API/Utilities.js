@@ -17,6 +17,20 @@ function GetDisplayItemName(itemName) {
         return DISP_NOTIFY_THRESHOLD;
       case CATEGORY:
         return DISP_CATEGORY;
+      case OPERATION_TIMESTAMP:
+        return DISP_OPERATION_TIMESTAMP;
+      case OPERATION_USER:
+        return DISP_OPERATION_USER;
+      case OPERATION_FUNCTION:
+        return DISP_OPERATION_FUNCTION;
+      case OPERATION_STOCKER_NAME:
+        return DISP_OPERATION_STOCKER_NAME;
+      case OPERATION_STOCKER_COUNT:
+        return DISP_OPERATION_STOCKER_COUNT;
+      case OPERATION_NOTIFY_THRESHOLD:
+        return DISP_OPERATION_NOTIFY_THRESHOLD;
+      case OPERATION_CATEGORY:
+        return DISP_OPERATION_CATEGORY;
       default:
         return "";
     }
@@ -41,6 +55,20 @@ function GetDisplayItemName(itemName) {
         return COLNUM_NOTIFY_THRESHOLD;
       case CATEGORY:
         return COLNUM_CATEGORY;
+      case OPERATION_TIMESTAMP:
+        return COLUMN_OPERATION_TIMESTAMP;
+      case OPERATION_USER:
+        return COLUMN_OPERATION_USER;
+      case OPERATION_FUNCTION:
+        return COLUMN_OPERATION_FUNCTION;
+      case OPERATION_STOCKER_NAME:
+        return COLUMN_OPERATION_STOCKER_NAME;
+      case OPERATION_STOCKER_COUNT:
+        return COLUMN_OPERATION_STOCKER_COUNT;
+      case OPERATION_NOTIFY_THRESHOLD:
+        return COLUMN_OPERATION_NOTIFY_THRESHOLD;
+      case OPERATION_CATEGORY:
+        return COLUMN_OPERATION_CATEGORY;
       default:
         return 0;
     }

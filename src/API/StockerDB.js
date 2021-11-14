@@ -1,8 +1,11 @@
 // スプレッドシート
 const StockerDB = SpreadsheetApp.openById(PropertiesService.getScriptProperties().getProperty("STOCKERDB_SPREADSHEET_ID"));
 
-// シート
+// Stockerシート
 const Stocker = StockerDB.getSheetByName("Stocker");
+
+// OperationHistoryシート
+const OperationHistory = StockerDB.getSheetByName("OperationHistory");
 
 // シート
 const Authentication = StockerDB.getSheetByName("Authentication");
@@ -14,7 +17,7 @@ const DATA_START_ROW = 2;
 // ------------------------
 // ストック品追加
 // ------------------------
-function createStocker(stockName, stockCount = 0, lastBuyDate = null, lastUnsealDate = null, notifyThreshold = 0, category) {
+function createStocker(user, stockName, stockCount = 0, lastBuyDate = null, lastUnsealDate = null, notifyThreshold = 0, category) {
   // なにもなければ成功
   var result = true;
 
@@ -38,6 +41,8 @@ function createStocker(stockName, stockCount = 0, lastBuyDate = null, lastUnseal
   var value = [stockerId, stockName, stockCount, lastBuyDate, lastUnsealDate, notifyThreshold, category];
   insertRowAtLast(value);
 
+  // 操作履歴書き込み
+  addOperationHistory(stockerId, stockName, stockCount, lastBuyDate, lastUnsealDate, notifyThreshold, category, user, "create", "", "", "","");
   return result;
 }
 
@@ -141,7 +146,7 @@ function getStockById(stockerId = "") {
 // ------------------------
 // ストック補充(ストックID)
 // ------------------------
-function addStockCountById(stockId = "", addCount = 0) {
+function addStockCountById(user, stockId = "", addCount = 0) {
   // なにもなければ成功
   var result = true;
 
@@ -152,13 +157,16 @@ function addStockCountById(stockId = "", addCount = 0) {
   writeValueInCell(STOCKER_COUNT, target.RowIndex, currentCount + addCount);
   writeValueInCell(LAST_BUY_DATE, target.RowIndex, new Date());
 
+  // 操作履歴書き込み
+  addOperationHistory(target.StockerID, target.StockerName, target.StockCount, target.LastBuyDate, target.LastUnsealDate, target.NotifyThreshold,
+      target.Category, user, "push", "", addCount, "","");
   return result;
 }
 
 // ------------------------
 // ストック使用(ストックID)
 // ------------------------
-function subStockCountById(stockId = "", subCount = 0) {
+function subStockCountById(user, stockId = "", subCount = 0) {
   // なにもなければ成功
   var result = true;
 
@@ -171,13 +179,16 @@ function subStockCountById(stockId = "", subCount = 0) {
   writeValueInCell(STOCKER_COUNT, target.RowIndex, currentCount - subCount);
   writeValueInCell(LAST_UNSEAL_DATE, target.RowIndex, new Date());
 
+  // 操作履歴書き込み
+  addOperationHistory(target.StockerID, target.StockerName, target.StockCount, target.LastBuyDate, target.LastUnsealDate, target.NotifyThreshold,
+    target.Category, user, "pop", "", subCount, "","");
   return result;
 }
 
 // ------------------------
 // ストック情報更新（ストックID）
 // ------------------------
-function updateStockInfoById(targetStockerID = "", newStockerName, newCategory, newNotifyThreshold) {
+function updateStockInfoById(user, targetStockerID = "", newStockerName, newCategory, newNotifyThreshold) {
   // new～は変更が無ければそのまま入ってくるので、値の検証はしない
 
   // なにもなければ成功
@@ -199,6 +210,9 @@ function updateStockInfoById(targetStockerID = "", newStockerName, newCategory, 
     writeValueInCell(NOTIFY_THRESHOLD, target.RowIndex, newNotifyThreshold);
   }
 
+  // 操作履歴書き込み
+  addOperationHistory(target.StockerID, target.StockerName, target.StockCount, target.LastBuyDate, target.LastUnsealDate, target.NotifyThreshold,
+    target.Category, user, "edit", newStockerName, "", newCategory, newNotifyThreshold);
   return result;
 }
 
@@ -206,7 +220,7 @@ function updateStockInfoById(targetStockerID = "", newStockerName, newCategory, 
 // ------------------------
 // ストック品削除(ストックID)
 // ------------------------
-function deleteStockById(stockerId = "") {
+function deleteStockById(user, stockerId = "") {
   // なにもなければ成功
   var result = true;
 
@@ -215,6 +229,9 @@ function deleteStockById(stockerId = "") {
 
   Stocker.deleteRow(target.RowIndex);
 
+  // 操作履歴書き込み
+  addOperationHistory(target.StockerID, target.StockerName, target.StockCount, target.LastBuyDate, target.LastUnsealDate, target.NotifyThreshold,
+    target.Category, user, "delete", "", "", "","");
   return result;
 }
 
@@ -238,4 +255,14 @@ function getValueInCell(itemName, row) {
 // ------------------------
 function insertRowAtLast(value = []) {
   Stocker.appendRow(value);
+}
+
+// ------------------------
+// 履歴書き込み
+// ------------------------
+function addOperationHistory(stockerId, stockerName, stockCount, lastBuyDate, lastUnsealDate, notifyThreshold, category, operationUser, operationFunction,
+    operationStockerName, operationStockCount, operationNotifyThreshold, operationCategory) {
+  var operationTimestamp = new Date();
+  OperationHistory.appendRow([stockerId, stockerName, stockCount, lastBuyDate, lastUnsealDate, notifyThreshold, category, operationTimestamp, operationUser, operationFunction,
+    operationStockerName, operationStockCount, operationNotifyThreshold, operationCategory]);
 }

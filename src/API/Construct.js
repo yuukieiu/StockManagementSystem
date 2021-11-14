@@ -22,6 +22,26 @@ const NOTIFY_THRESHOLD = "NotifyThreshold";
 // 分類
 const CATEGORY = "Category";
 
+// 操作日時
+const OPERATION_TIMESTAMP ="OperationTimestamp";
+
+// 操作ユーザ
+const OPERATION_USER = "OperationUser";
+
+// 操作内容
+const OPERATION_FUNCTION = "OparationFunction";
+
+// ストック品名（操作後）
+const OPERATION_STOCKER_NAME = "OperationStockerName";
+
+// ストック数（操作後）
+const OPERATION_STOCKER_COUNT = "OperationStockCount";
+
+// 通知閾値（操作後）
+const OPERATION_NOTIFY_THRESHOLD = "OperationNotifyThreshold";
+
+// 分類（操作後）
+const OPERATION_CATEGORY = "OperationCategory";
 
 // ------------------------
 // 項目名（表示名）
@@ -47,6 +67,26 @@ const DISP_NOTIFY_THRESHOLD = "通知閾値";
 // 分類
 const DISP_CATEGORY = "分類";
 
+// 操作日時
+const DISP_OPERATION_TIMESTAMP ="操作日時";
+
+// 操作ユーザ
+const DISP_OPERATION_USER = "操作ユーザ";
+
+// 操作内容
+const DISP_OPERATION_FUNCTION = "操作内容";
+
+// ストック品名（操作後）
+const DISP_OPERATION_STOCKER_NAME = "ストック品名（操作後）";
+
+// ストック数（操作後）
+const DISP_OPERATION_STOCKER_COUNT = "ストック数（操作後）";
+
+// 通知閾値（操作後）
+const DISP_OPERATION_NOTIFY_THRESHOLD = "通知閾値（操作後）";
+
+// 分類（操作後）
+const DISP_OPERATION_CATEGORY = "分類（操作後）";
 
 // ------------------------
 // 各項目の列番号
@@ -71,3 +111,24 @@ const COLNUM_NOTIFY_THRESHOLD = 6;
 
 // 分類
 const COLNUM_CATEGORY = 7;
+
+// 操作日時
+const COLNUM_OPERATION_TIMESTAMP = 8;
+
+// 操作ユーザ
+const COLNUM_OPERATION_USER = 9;
+
+// 操作内容
+const COLNUM_OPERATION_FUNCTION = 10;
+
+// ストック品名（操作後）
+const COLNUM_OPERATION_STOCKER_NAME = 11;
+
+// ストック数（操作後）
+const COLNUM_OPERATION_STOCKER_COUNT = 12;
+
+// 通知閾値（操作後）
+const COLNUM_OPERATION_NOTIFY_THRESHOLD = 13;
+
+// 分類（操作後）
+const COLNUM_OPERATION_CATEGORY = 14;
