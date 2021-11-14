@@ -38,7 +38,8 @@ function createStocker(stockName, stockCount = 0, lastBuyDate = null, lastUnseal
   }
 
   // 配列化して1行書き込み
-  insertRowAtLast([id, stockName, stockCount, lastBuyDate, lastUnsealDate, notifyThreshold, category]);
+  var value = [id, stockName, stockCount, lastBuyDate, lastUnsealDate, notifyThreshold, category];
+  insertRowAtLast(value);
 
   return result;
 }
