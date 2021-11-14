@@ -212,7 +212,7 @@ function updateStockInfoById(user, targetStockerID = "", newStockerName, newCate
 
   // 操作履歴書き込み
   addOperationHistory(target.StockerID, target.StockerName, target.StockCount, target.LastBuyDate, target.LastUnsealDate, target.NotifyThreshold,
-    target.Category, user, "edit", newStockerName, "", newCategory, newNotifyThreshold);
+    target.Category, user, "edit", newStockerName, "", newNotifyThreshold, newCategory);
   return result;
 }
 
