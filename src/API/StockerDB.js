@@ -49,7 +49,7 @@ function createStocker(stockName, stockCount = 0, lastBuyDate = null, lastUnseal
 // ------------------------
 function getStockAll() {
   var result = [];
-  var stockerArrays = Stocker.getRange(DATA_START_ROW,GetItemColumnNum(STOCKER_NAME),Stocker.getLastRow()-1,GetItemColumnNum(CATEGORY)).getValues();
+  var stockerArrays = Stocker.getRange(DATA_START_ROW,GetItemColumnNum(STOCKER_ID),Stocker.getLastRow()-1,GetItemColumnNum(CATEGORY)).getValues();
   for (var i = 0; i < stockerArrays.length; i++) {
     var stock = {
       StockerID       : stockerArrays[i][GetItemColumnNum(STOCKER_ID)-1],        // ストックID
