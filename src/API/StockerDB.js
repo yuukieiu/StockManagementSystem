@@ -28,17 +28,14 @@ function createStocker(stockName, stockCount = 0, lastBuyDate = null, lastUnseal
   var target = getStockByName(stockName);
   if (target != null) throw new Error(DB_DUPLICATE_STOCKERNAME_EXCEPTION);
 
-  // 書き込み行取得
-  var targetLow = Stocker.getLastRow() + 1;
-
   // ストックID作成
   var stockerId = Utilities.getUuid();
-  while (Stocker.createTextFinder(id).findAll().length > 0) {
-    id = Utilities.getUuid();
+  while (Stocker.createTextFinder(stockerId).findAll().length > 0) {
+    stockerId = Utilities.getUuid();
   }
 
   // 配列化して1行書き込み
-  var value = [id, stockName, stockCount, lastBuyDate, lastUnsealDate, notifyThreshold, category];
+  var value = [stockerId, stockName, stockCount, lastBuyDate, lastUnsealDate, notifyThreshold, category];
   insertRowAtLast(value);
 
   return result;
