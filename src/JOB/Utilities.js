@@ -40,7 +40,7 @@ function GetDisplayItemName(itemName) {
       case NOTIFY_THRESHOLD:
         return COLNUM_NOTIFY_THRESHOLD;
       case CATEGORY:
-        return COLUMN_CATEGORY;
+        return COLNUM_CATEGORY;
       default:
         return 0;
     }
