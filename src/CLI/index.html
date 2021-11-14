@@ -404,7 +404,7 @@
         ],
         editedIndex: -1,
         editedItem: {
-          StockerId: '',
+          StockerID: '',
           TargetStockerName: '',
           StockerName: '',
           StockCount: 0,
@@ -414,7 +414,7 @@
           NotifyThreshold: 0,
         },
         defaultItem: {
-          StockerId: '',
+          StockerID: '',
           TargetStockerName: '',
           StockerName: '',
           StockCount: 0,
@@ -481,7 +481,7 @@
             encryptedEmail: '<?=ENCRYPTED_ACTIVE_USER?>',
             method: 'push',
             stocker: {
-              id: this.editedItem.StockerId,
+              id: this.editedItem.StockerID,
               count: this.editedItem.StockCount
             }
           });
@@ -512,7 +512,7 @@
             encryptedEmail: '<?=ENCRYPTED_ACTIVE_USER?>',
             method: 'pop',
             stocker: {
-              id: this.editedItem.StockerId,
+              id: this.editedItem.StockerID,
               count: this.editedItem.StockCount
             }
           });
@@ -534,7 +534,7 @@
             encryptedEmail: '<?=ENCRYPTED_ACTIVE_USER?>',
             method: 'delete',
             stocker: {
-              id: this.editedItem.StockerId
+              id: this.editedItem.StockerID
             }
           });
           //alert('以下のデータを送信するよ。\n' + params)
@@ -597,7 +597,7 @@
             encryptedEmail: '<?=ENCRYPTED_ACTIVE_USER?>',
             method: 'edit',
             stocker: {
-              id: this.editedItem.StockerId,
+              id: this.editedItem.StockerID,
               newname: this.editedItem.StockerName,
               newcategory: this.editedItem.Category,
               newnotifythreshold: this.editedItem.NotifyThreshold
