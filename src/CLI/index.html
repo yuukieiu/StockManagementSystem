@@ -603,7 +603,7 @@
               newnotifythreshold: this.editedItem.NotifyThreshold
             }
           });
-          //alert('以下のデータを送信するよ。\n' + params)
+          alert('以下のデータを送信するよ。\n' + params)
           this.closeEditDialog()
           await this.postRequest(params)
           this.initialize()
