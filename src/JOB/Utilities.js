@@ -3,6 +3,8 @@
 // ------------------------
 function GetDisplayItemName(itemName) {
     switch (itemName) {
+      case STOCKER_ID:
+        return DISP_STOCKER_ID;
       case STOCKER_NAME:
         return DISP_STOCKER_NAME;
       case STOCKER_COUNT:
@@ -25,6 +27,8 @@ function GetDisplayItemName(itemName) {
   // ------------------------
   function GetItemColumnNum(itemName) {
     switch (itemName) {
+      case STOCKER_ID:
+        return COLNUM_STOCKER_ID;
       case STOCKER_NAME:
         return COLNUM_STOCKER_NAME;
       case STOCKER_COUNT:

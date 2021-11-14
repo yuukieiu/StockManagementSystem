@@ -1,6 +1,9 @@
 // ------------------------
 // 項目名（物理名）
 // ------------------------
+// ストックID
+const STOCKER_ID = "StockerID";
+
 // ストック品名
 const STOCKER_NAME = "StockerName";
 
@@ -23,6 +26,9 @@ const CATEGORY = "Category";
 // ------------------------
 // 項目名（表示名）
 // ------------------------
+// ストックID
+const DISP_STOCKER_ID = "ストックID";
+
 // ストック品名
 const DISP_STOCKER_NAME = "ストック品名";
 
@@ -45,20 +51,23 @@ const DISP_CATEGORY = "分類";
 // ------------------------
 // 各項目の列番号
 // ------------------------
+// ストックID
+const COLNUM_STOCKER_ID = 1;
+
 // ストック品名
-const COLNUM_STOCKER_NAME = 1;
+const COLNUM_STOCKER_NAME = 2;
 
 // ストック数
-const COLNUM_STOCKER_COUNT = 2;
+const COLNUM_STOCKER_COUNT = 3;
 
 // 最終購入日
-const COLNUM_LAST_BUY_DATE = 3;
+const COLNUM_LAST_BUY_DATE = 4;
 
 // 現在の使用開始日
-const COLNUM_LAST_UNSEAL_DATE = 4;
+const COLNUM_LAST_UNSEAL_DATE = 5;
 
 // 通知閾値
-const COLNUM_NOTIFY_THRESHOLD = 5;
+const COLNUM_NOTIFY_THRESHOLD = 6;
 
 // 分類
-const COLUMN_CATEGORY = 6;
+const COLNUM_CATEGORY = 7;

@@ -15,6 +15,7 @@ function getNotifyStockList() {
   var stockerArrays = Stocker.getRange(DATA_START_ROW,GetItemColumnNum(STOCKER_NAME),Stocker.getLastRow()-1,GetItemColumnNum(CATEGORY)).getValues();
   for (var i = 0; i < stockerArrays.length; i++) {
     var stock = {
+      StockerID       : stockerArrays[i][GetItemColumnNum(STOCKER_ID)-1],        // ストックID
       StockerName     : stockerArrays[i][GetItemColumnNum(STOCKER_NAME)-1],      // ストック品名
       StockCount      : stockerArrays[i][GetItemColumnNum(STOCKER_COUNT)-1],     // ストック数
       LastBuyDate     : Utilities.formatDate(stockerArrays[i][GetItemColumnNum(LAST_BUY_DATE)-1],"JST", "yyyy/MM/dd"),     // 最終購入日
