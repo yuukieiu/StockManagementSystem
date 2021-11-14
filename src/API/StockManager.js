@@ -67,7 +67,7 @@ function registerStocker(stockName, stockCount = 0, lastBuyDate = null, lastUnse
   // ------------------------
   // ストック追加
   // ------------------------
-  function addStock(stockName, stockCount = 0) {
+  function addStock(stockId, stockCount = 0) {
     const functionName = "ストック追加";
     writeStartLog(functionName);
 
@@ -78,15 +78,15 @@ function registerStocker(stockName, stockCount = 0, lastBuyDate = null, lastUnse
     }
 
     try {
-        var result = addStockCount(stockName, stockCount);
+        var result = addStockCountById(stockId, stockCount);
     } catch (e) {
         returnValue.status = false;
         switch(e.message) {
             case DB_EMPTY_STOCK_OBJECT_EXCEPTION:
-                returnValue.message = "指定のストックが存在しないためストック追加できませんでした。ストック名：" + stockName;
+                returnValue.message = "指定のストックが存在しないためストック追加できませんでした。ストックID：" + stockId;
                 break;
             default:
-                returnValue.message = "ストックを追加できませんでした。データ：" + stockName + "," + stockCount;
+                returnValue.message = "ストックを追加できませんでした。データ：" + stockId + "," + stockCount;
                 break;
         }
         warnLog(functionName, returnValue.message);
@@ -99,7 +99,7 @@ function registerStocker(stockName, stockCount = 0, lastBuyDate = null, lastUnse
   // ------------------------
   // ストック使用
   // ------------------------
-  function useStock(stockName, stockCount = 0) {
+  function useStock(stockId, stockCount = 0) {
     const functionName = "ストック使用";
     writeStartLog(functionName);
 
@@ -110,7 +110,7 @@ function registerStocker(stockName, stockCount = 0, lastBuyDate = null, lastUnse
     }
 
     try {
-        var result = subStockCount(stockName, stockCount);
+        var result = subStockCountById(stockId, stockCount);
     } catch (e) {
         returnValue.status = false;
         switch(e.message) {
@@ -121,7 +121,7 @@ function registerStocker(stockName, stockCount = 0, lastBuyDate = null, lastUnse
                 returnValue.message = "ストック数不足のためためストック使用できませんでした。";
                 break;
             default:
-                returnValue.message = "ストック使用できませんでした。データ：" + stockName + "," + stockCount;
+                returnValue.message = "ストック使用できませんでした。データ：" + stockId + "," + stockCount;
                 break;
         }
         warnLog(functionName, returnValue.message);
@@ -134,7 +134,7 @@ function registerStocker(stockName, stockCount = 0, lastBuyDate = null, lastUnse
   // ------------------------
   // ストック品削除
   // ------------------------
-  function deleteStocker(stockName) {
+  function deleteStocker(stockId) {
     const functionName = "ストック品削除";
     writeStartLog(functionName);
 
@@ -145,7 +145,7 @@ function registerStocker(stockName, stockCount = 0, lastBuyDate = null, lastUnse
     }
 
     try {
-        var result = deleteStockByName(stockName);
+        var result = deleteStockById(stockId);
     } catch (e) {
         returnValue.status = false;
         switch(e.message) {
@@ -153,7 +153,7 @@ function registerStocker(stockName, stockCount = 0, lastBuyDate = null, lastUnse
                 returnValue.message = "指定のストックが存在しないためストック品削除できませんでした。";
                 break;
             default:
-                returnValue.message = "ストック品削除できませんでした。データ：" + stockName;
+                returnValue.message = "ストック品削除できませんでした。データ：" + stockId;
                 break;
         }
         warnLog(functionName, returnValue.message);
@@ -166,7 +166,7 @@ function registerStocker(stockName, stockCount = 0, lastBuyDate = null, lastUnse
   // ------------------------
   // ストック閾値チェック(個別)
   // ------------------------
-  function checkStockCount(stockerName = "") {
+  function checkStockCount(stockerId = "") {
     const functionName = "ストック閾値チェック(個別)";
     writeStartLog(functionName);
 
@@ -174,7 +174,7 @@ function registerStocker(stockName, stockCount = 0, lastBuyDate = null, lastUnse
         status  : true,
         message : "success!!"
     }
-    var stock = getStockByName(stockerName);
+    var stock = getStockById(stockerId);
     if (stock == null) {
       errorlog(functionName,"ストックがないか複数件あります。");
       throw new Error(CANT_CHECK_STOCK_COUNT_EXCEPTION);
@@ -193,7 +193,7 @@ function registerStocker(stockName, stockCount = 0, lastBuyDate = null, lastUnse
 // ------------------------
 // ストック情報更新
 // ------------------------
-function updateStocker(targetStockerName = "", newStockerName, newCategory, newNotifyThreshold) {
+function updateStocker(targetStockerId = "", newStockerName, newCategory, newNotifyThreshold) {
   const functionName = "ストック情報更新";
   writeStartLog(functionName);
 
@@ -203,7 +203,7 @@ function updateStocker(targetStockerName = "", newStockerName, newCategory, newN
   }
 
   try {
-      var result = updateStockInfo(targetStockerName, newStockerName, newCategory, newNotifyThreshold);
+      var result = updateStockInfoById(targetStockerId, newStockerName, newCategory, newNotifyThreshold);
   } catch (e) {
     returnValue.status = false;
     switch(e.message) {
@@ -211,7 +211,7 @@ function updateStocker(targetStockerName = "", newStockerName, newCategory, newN
             returnValue.message = "指定のストックが存在しないためストック情報更新できませんでした。";
             break;
         default:
-            returnValue.message = "ストック情報更新できませんでした。データ：" + targetStockerName;
+            returnValue.message = "ストック情報更新できませんでした。データ：" + targetStockerId;
             break;
     }
     warnLog(functionName, returnValue.message);

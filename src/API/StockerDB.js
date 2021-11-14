@@ -108,15 +108,44 @@ function getStockByName(stockerName = "") {
   return stock;
 }
 
+// ------------------------
+// ストック品取得(ストックID)
+// ------------------------
+function getStockById(stockerId = "") {
+  // ストックIDのみを指定し完全一致で検索
+  var stockerIdColumn = Stocker.getRange("A:A");
+  var finder = stockerIdColumn.createTextFinder(stockerId)
+                .matchEntireCell(true);
+  var result = finder.findAll();
+  var stock;
+
+  // 引っかからなければnull
+  if (result.length == 0) {
+    stock = null;
+  } else {
+    stock = {
+      StockerID       : getValueInCell(STOCKER_ID, result[0].getRowIndex()),        // ストックID
+      StockerName     : getValueInCell(STOCKER_NAME, result[0].getRowIndex()),      // ストック品名
+      StockCount      : getValueInCell(STOCKER_COUNT, result[0].getRowIndex()),     // ストック数
+      LastBuyDate     : Utilities.formatDate(getValueInCell(LAST_BUY_DATE, result[0].getRowIndex()),"JST", "yyyy/MM/dd"),     // 最終購入日
+      LastUnsealDate  : Utilities.formatDate(getValueInCell(LAST_UNSEAL_DATE, result[0].getRowIndex()),"JST", "yyyy/MM/dd"),  // 最終開封日
+      NotifyThreshold : getValueInCell(NOTIFY_THRESHOLD, result[0].getRowIndex()),  // 通知閾値
+      Category        : getValueInCell(CATEGORY, result[0].getRowIndex()),          // 分類
+      RowIndex        : result[0].getRowIndex()
+    }
+  }
+  return stock;
+}
+
 // ★★★Update★★★
 // ------------------------
-// ストック補充(ストック品名)
+// ストック補充(ストックID)
 // ------------------------
-function addStockCount(stockName = "", addCount = 0) {
+function addStockCountById(stockId = "", addCount = 0) {
   // なにもなければ成功
   var result = true;
 
-  var target = getStockByName(stockName);
+  var target = getStockById(stockId);
   if (target == null) throw new Error(DB_EMPTY_STOCK_OBJECT_EXCEPTION);
 
   var currentCount = Stocker.getRange(target.RowIndex, GetItemColumnNum(STOCKER_COUNT)).getValue();
@@ -127,13 +156,13 @@ function addStockCount(stockName = "", addCount = 0) {
 }
 
 // ------------------------
-// ストック使用(ストック品名)
+// ストック使用(ストックID)
 // ------------------------
-function subStockCount(stockName = "", subCount = 0) {
+function subStockCountById(stockId = "", subCount = 0) {
   // なにもなければ成功
   var result = true;
 
-  var target = getStockByName(stockName);
+  var target = getStockById(stockId);
   if (target == null) throw new Error(DB_EMPTY_STOCK_OBJECT_EXCEPTION);
 
   var currentCount = Stocker.getRange(target.RowIndex, GetItemColumnNum(STOCKER_COUNT)).getValue();
@@ -146,20 +175,20 @@ function subStockCount(stockName = "", subCount = 0) {
 }
 
 // ------------------------
-// ストック情報更新
+// ストック情報更新（ストックID）
 // ------------------------
-function updateStockInfo(targetStockerName = "", newStockerName, newCategory, newNotifyThreshold) {
+function updateStockInfoById(targetStockerID = "", newStockerName, newCategory, newNotifyThreshold) {
   // new～は変更が無ければそのまま入ってくるので、値の検証はしない
 
   // なにもなければ成功
   var result = true;
 
-  var target = getStockByName(targetStockerName);
+  var target = getStockById(targetStockerID);
   if (target == null) throw new Error(DB_EMPTY_STOCK_OBJECT_EXCEPTION);
 
   if (target.StockerName != newStockerName) {
     // 重複チェック
-    var target = getStockByName(newStockerName);
+    var target = getStockById(newStockerName);
     if (target != null) throw new Error(DB_DUPLICATE_STOCKERNAME_EXCEPTION);
     writeValueInCell(STOCKER_NAME, target.RowIndex, newStockerName);
   }
@@ -175,13 +204,13 @@ function updateStockInfo(targetStockerName = "", newStockerName, newCategory, ne
 
 // ★★★Delete★★★
 // ------------------------
-// ストック品削除(ストック品名)
+// ストック品削除(ストックID)
 // ------------------------
-function deleteStockByName(stockerName = "") {
+function deleteStockById(stockerId = "") {
   // なにもなければ成功
   var result = true;
 
-  var target = getStockByName(stockerName);
+  var target = getStockById(stockerId);
   if (target == null) throw new Error(DB_EMPTY_STOCK_OBJECT_EXCEPTION);
 
   Stocker.deleteRow(target.RowIndex);

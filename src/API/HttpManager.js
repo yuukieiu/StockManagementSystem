@@ -39,17 +39,17 @@ function doGet(e) {
         result = registerStocker(jsonData.stocker.name, jsonData.stocker.count, jsonData.stocker.lastbuydate, jsonData.stocker.lastunsealdate, jsonData.stocker.notifythreshold, jsonData.stocker.category);
         break;
       case "push" :
-        result = addStock(jsonData.stocker.name, jsonData.stocker.count);
+        result = addStock(jsonData.stocker.id, jsonData.stocker.count);
         break;
       case "pop" :
-        result = useStock(jsonData.stocker.name, jsonData.stocker.count);
+        result = useStock(jsonData.stocker.id, jsonData.stocker.count);
         break;
       case "delete" :
-        result = deleteStocker(jsonData.stocker.name);
+        result = deleteStocker(jsonData.stocker.id);
         break;
       case "check" :
         try {
-            result = checkStockCount(jsonData.stocker.name)
+            result = checkStockCount(jsonData.stocker.id)
         } catch (e) {
             switch(e.message) {
                 case CANT_CHECK_STOCK_COUNT_EXCEPTION:
@@ -60,7 +60,7 @@ function doGet(e) {
         }
         break;
       case "edit" :
-        result = updateStocker(jsonData.stocker.oldname, jsonData.stocker.newname, jsonData.stocker.newcategory, jsonData.stocker.newnotifythreshold);
+        result = updateStocker(jsonData.stocker.id, jsonData.stocker.newname, jsonData.stocker.newcategory, jsonData.stocker.newnotifythreshold);
         break;
       default:
         break;
