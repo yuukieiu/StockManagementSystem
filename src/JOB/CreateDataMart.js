@@ -103,7 +103,7 @@ function calcUnsealInterval(historyArray = []) {
       // 間隔の計算
       var interval = new Date(history.OperationTimestamp).getTime() - new Date(preUnsealDate).getTime();
       // ミリ秒*1000*60秒*60分*24時間
-      interval = interval / 1000*60*60*24;
+      interval = interval / (1000*60*60*24);
       unsealIntervalList.push(interval);
 
       preUnsealDate = history.OperationTimestamp;
