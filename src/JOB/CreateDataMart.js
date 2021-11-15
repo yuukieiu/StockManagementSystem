@@ -1,8 +1,11 @@
+// スプレッドシート
+const StockerDBforDM = SpreadsheetApp.openById(PropertiesService.getScriptProperties().getProperty("STOCKERDB_SPREADSHEET_ID"));
+
 // 履歴シート
-const OperationHistory = StockerDB.getSheetByName("OperationHistory");
+const OperationHistory = StockerDBforDM.getSheetByName("OperationHistory");
 
 // 開封間隔データマート
-const UnsealInterval = StockerDB.getSheetByName("UnsealIntervalDataMart");
+const UnsealInterval = StockerDBforDM.getSheetByName("UnsealIntervalDataMart");
 
 // ------------------------
 // 開封間隔データマート作成
