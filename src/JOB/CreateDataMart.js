@@ -1,14 +1,8 @@
-// スプレッドシート
-const StockerDB = SpreadsheetApp.openById(PropertiesService.getScriptProperties().getProperty("STOCKERDB_SPREADSHEET_ID"));
-
 // 履歴シート
 const OperationHistory = StockerDB.getSheetByName("OperationHistory");
 
 // 開封間隔データマート
 const UnsealInterval = StockerDB.getSheetByName("UnsealIntervalDataMart");
-
-// データ開始行
-const DATA_START_ROW = 2;
 
 // ------------------------
 // 開封間隔データマート作成
