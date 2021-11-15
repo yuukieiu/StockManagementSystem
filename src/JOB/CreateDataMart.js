@@ -80,8 +80,8 @@ function calcUnsealInterval(historyArray = []) {
     var history = historyArray[i];
     if (currentStockerID != history.StockerID) {
       // ストックIDが変わった
-      if (currentStockerID != "") {
-        // currentStockerIDが初期値じゃない
+      if (currentStockerID != "" && unsealIntervalList.length > 0) {
+        // currentStockerIDが初期値じゃないかつ開封間隔配列が1つ以上ある
         // 集計作業
         var sum = unsealIntervalList.reduce(function (acc, cur) {
           return acc + cur;
