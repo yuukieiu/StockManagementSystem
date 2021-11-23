@@ -56,19 +56,19 @@ function GetDisplayItemName(itemName) {
       case CATEGORY:
         return COLNUM_CATEGORY;
       case OPERATION_TIMESTAMP:
-        return COLUMN_OPERATION_TIMESTAMP;
+        return COLNUM_OPERATION_TIMESTAMP;
       case OPERATION_USER:
-        return COLUMN_OPERATION_USER;
+        return COLNUM_OPERATION_USER;
       case OPERATION_FUNCTION:
-        return COLUMN_OPERATION_FUNCTION;
+        return COLNUM_OPERATION_FUNCTION;
       case OPERATION_STOCKER_NAME:
-        return COLUMN_OPERATION_STOCKER_NAME;
+        return COLNUM_OPERATION_STOCKER_NAME;
       case OPERATION_STOCKER_COUNT:
-        return COLUMN_OPERATION_STOCKER_COUNT;
+        return COLNUM_OPERATION_STOCKER_COUNT;
       case OPERATION_NOTIFY_THRESHOLD:
-        return COLUMN_OPERATION_NOTIFY_THRESHOLD;
+        return COLNUM_OPERATION_NOTIFY_THRESHOLD;
       case OPERATION_CATEGORY:
-        return COLUMN_OPERATION_CATEGORY;
+        return COLNUM_OPERATION_CATEGORY;
       default:
         return 0;
     }
