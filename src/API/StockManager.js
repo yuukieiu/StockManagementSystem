@@ -244,6 +244,11 @@ function undoStockerOperation(targetStockerId, operationTimestamp) {
   const functionName = "操作取り消し";
   writeStartLog(functionName);
 
+  var returnValue = {
+    status  : true,
+    message : "success!!"
+  }
+
   try {
     var result = undoStockerOperationById(targetStockerId, operationTimestamp);
   } catch (e) {
