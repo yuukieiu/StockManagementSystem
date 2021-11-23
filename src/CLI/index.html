@@ -721,7 +721,7 @@
               this.historyText = 'ストック名：' + response.data.StockerName + '\nストック数：' + response.data.StockCount + '\n最終購入日：' + response.data.LastBuyDate
                   + '\n最終開封日：' + response.data.LastUnsealDate + '\n通知閾値：' + response.data.NotifyThreshold;
             })
-            .finally(() => {this.undoLoading = false; this.undoDialog = true;});
+            .finally(() => {this.undoLoading = false; this.undoDialog = true;alert(response.data)});
           this.historyItem.StockerID = response.data.StockerID;
           this.historyItem.Timestamp = response.data.OperationTimestamp;
         },
