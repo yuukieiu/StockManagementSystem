@@ -622,8 +622,9 @@
         async loadCategoryList() {
           await axios.get('<?=TARGET_URL_GETCATEGORY?>')
             .then(response => {
-              this.categoryList = response.data
+              vm.categoryList = response.data
             })
+            .catch(error => console.log(error))
         },
       }
     })
