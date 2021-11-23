@@ -84,7 +84,7 @@ function getOperationHistoryAll() {
       LastUnsealDate  : Utilities.formatDate(historyArrays[i][GetItemColumnNum(LAST_UNSEAL_DATE)-1],"JST", "yyyy/MM/dd"),  // 最終開封日
       NotifyThreshold : historyArrays[i][GetItemColumnNum(NOTIFY_THRESHOLD)-1],  // 通知閾値
       Category        : historyArrays[i][GetItemColumnNum(CATEGORY)-1],          // 分類
-      OperationTimestamp : Utilities.formatDate(historyArrays[i][GetItemColumnNum(OPERATION_TIMESTAMP)-1],"JST", "yyyy/MM/dd"),  // 操作日
+      OperationTimestamp : historyArrays[i][GetItemColumnNum(OPERATION_TIMESTAMP)-1],  // 操作日時
       OperationUser   : historyArrays[i][GetItemColumnNum(OPERATION_USER)-1],    // 操作ユーザ
       OperationFunction : historyArrays[i][GetItemColumnNum(OPERATION_FUNCTION)-1], // 操作
       OperationStockerName : historyArrays[i][GetItemColumnNum(OPERATION_STOCKER_NAME)-1], // ストック名（操作後）
