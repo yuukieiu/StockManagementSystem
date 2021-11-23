@@ -497,10 +497,17 @@
         },
         historyItem: {
           StockerID: '',
-          Timestamp: ''
+          OperationID: ''
         },
         numberItems: [1,2,3,4,5],
         numberItemsInclZero: [0,1,2,3,4,5],
+        operationConvert: {
+          create: 'ストック品追加（取り消し不可）',
+          push:   '追加',
+          pop:    '使用',
+          delete: '削除',
+          edit:   '編集'
+        }
       }),
 
       watch: {
@@ -636,7 +643,7 @@
             method: 'undo',
             stocker: {
               id: this.historyItem.StockerID,
-              operationtimestamp: this.historyItem.Timestamp
+              operationid: this.historyItem.OperationID
             }
           });
           this.closeUndoDialog()
@@ -730,9 +737,12 @@
           await axios.get('<?=TARGET_URL_GETLASTHISTORY?>' + item.StockerID)
             .then(response => {
               this.historyText = 'ストック名：' + response.data.StockerName + '\nストック数：' + response.data.StockCount + '\n最終購入日：' + response.data.LastBuyDate
-                  + '\n最終開封日：' + response.data.LastUnsealDate + '\n通知閾値：' + response.data.NotifyThreshold;
+                  + '\n最終開封日：' + response.data.LastUnsealDate + '\n通知閾値：' + response.data.NotifyThreshold + '\n\n・取り消す操作内容\n操作：' + operationConvert[response.data.OperationFunction]
+                  + '\n操作日時：' + response.data.OperationTimestamp + '\n操作ユーザ：' + response.data.OperationUser + '\n編集ストック名：' + response.data.OperationStockerName
+                  + '\n操作ストック数：' + response.data.OperationStockCount + '\n操作通知閾値：' + response.data.OperationNotifyThreshold + '\n操作カテゴリ：'
+                  + response.data.OperationCategory;
               this.historyItem.StockerID = response.data.StockerID;
-              this.historyItem.Timestamp = response.data.OperationTimestamp;
+              this.historyItem.OperationID = response.data.OperationID;
             })
             .finally(() => {this.undoLoading = false});
         },

@@ -43,6 +43,9 @@ const OPERATION_NOTIFY_THRESHOLD = "OperationNotifyThreshold";
 // 分類（操作後）
 const OPERATION_CATEGORY = "OperationCategory";
 
+// 操作履歴ID
+const OPERATION_ID = "OperationID";
+
 // ------------------------
 // 項目名（表示名）
 // ------------------------
@@ -88,6 +91,9 @@ const DISP_OPERATION_NOTIFY_THRESHOLD = "通知閾値（操作後）";
 // 分類（操作後）
 const DISP_OPERATION_CATEGORY = "分類（操作後）";
 
+// 操作履歴ID
+const DISP_OPERATION_ID = "操作履歴ID";
+
 // ------------------------
 // 各項目の列番号
 // ------------------------
@@ -132,3 +138,6 @@ const COLNUM_OPERATION_NOTIFY_THRESHOLD = 13;
 
 // 分類（操作後）
 const COLNUM_OPERATION_CATEGORY = 14;
+
+// 操作履歴ID
+const COLNUM_OPERATION_ID = 15;

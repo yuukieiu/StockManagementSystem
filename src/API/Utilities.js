@@ -31,6 +31,8 @@ function GetDisplayItemName(itemName) {
         return DISP_OPERATION_NOTIFY_THRESHOLD;
       case OPERATION_CATEGORY:
         return DISP_OPERATION_CATEGORY;
+      case OPERATION_ID:
+        return DISP_OPERATION_ID;
       default:
         return "";
     }
@@ -69,6 +71,8 @@ function GetDisplayItemName(itemName) {
         return COLNUM_OPERATION_NOTIFY_THRESHOLD;
       case OPERATION_CATEGORY:
         return COLNUM_OPERATION_CATEGORY;
+      case OPERATION_ID:
+        return COLNUM_OPERATION_ID
       default:
         return 0;
     }

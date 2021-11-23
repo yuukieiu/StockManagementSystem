@@ -240,7 +240,7 @@ function getLastOperationHistory(targetStockerId) {
 // ------------------------
 // 操作取り消し
 // ------------------------
-function undoStockerOperation(targetStockerId, operationTimestamp) {
+function undoStockerOperation(targetStockerId, targetOperationId) {
   const functionName = "操作取り消し";
   writeStartLog(functionName);
 
@@ -250,12 +250,12 @@ function undoStockerOperation(targetStockerId, operationTimestamp) {
   }
 
   try {
-    var result = undoStockerOperationById(targetStockerId, operationTimestamp);
+    var result = undoStockerOperationById(targetStockerId, targetOperationId);
   } catch (e) {
     returnValue.status = false;
     switch(e.message) {
       case DB_EMPTY_STOCK_OBJECT_EXCEPTION:
-        returnValue.message = "指定のストックが存在しないため操作取り消しできませんでした。";
+        returnValue.message = "指定の履歴が存在しないため操作取り消しできませんでした。";
         break;
       default:
         returnValue.message = "操作取り消しできませんでした。データ：" + targetStockerId;

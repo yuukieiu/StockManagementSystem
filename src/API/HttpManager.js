@@ -64,7 +64,7 @@ function doGet(e) {
         result = updateStocker(userData.email, jsonData.stocker.id, jsonData.stocker.newname, jsonData.stocker.newcategory, jsonData.stocker.newnotifythreshold);
         break;
       case "undo" :
-        result = undoStockerOperation(jsonData.stocker.id, jsonData.stocker.operationtimestamp);
+        result = undoStockerOperation(jsonData.stocker.id, jsonData.stocker.operationid);
         break;
       default:
         break;

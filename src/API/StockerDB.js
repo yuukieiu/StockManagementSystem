@@ -91,6 +91,7 @@ function getOperationHistoryAll() {
       OperationStockCount : historyArrays[i][GetItemColumnNum(OPERATION_STOCKER_COUNT)-1], // ストック数（操作後）
       OperationNotifyThreshold : historyArrays[i][GetItemColumnNum(OPERATION_NOTIFY_THRESHOLD)-1], // 通知閾値（操作後）
       OperationCategory : historyArrays[i][GetItemColumnNum(OPERATION_CATEGORY)-1], // 分類（操作後）
+      OperationID     : historyArrays[i][GetItemColumnNum(OPERATION_ID)-1],      // 操作履歴ID
       RowIndex        : i
     }
     result.push(stock);
@@ -272,13 +273,13 @@ function updateStockInfoById(user, targetStockerID = "", newStockerName, newCate
 // ------------------------
 // ストック情報戻し（ストックID）
 // ------------------------
-function undoStockerOperationById(stockerId = "", operationTimestamp) {
+function undoStockerOperationById(stockerId = "", operationId) {
   // なにもなければ成功
   var result = true;
 
   var history = getLastOperationHistoryById(stockerId);
   if (history == null) throw new Error(DB_EMPTY_STOCK_OBJECT_EXCEPTION);
-  if (history.OperationTimestamp != operationTimestamp) throw new Error(DB_EMPTY_STOCK_OBJECT_EXCEPTION);
+  if (history.OperationID != operationId) throw new Error(DB_EMPTY_STOCK_OBJECT_EXCEPTION);
 
   var target = getStockById(stockerId);
   if (target == null) throw new Error(DB_EMPTY_STOCK_OBJECT_EXCEPTION);
@@ -342,6 +343,10 @@ function insertRowAtLast(value = []) {
 function addOperationHistory(stockerId, stockerName, stockCount, lastBuyDate, lastUnsealDate, notifyThreshold, category, operationUser, operationFunction,
     operationStockerName, operationStockCount, operationNotifyThreshold, operationCategory) {
   var operationTimestamp = new Date();
+  var operationId = stockerId + Utilities.getUuid();
+  while (OperationHistory.createTextFinder(operationId).findAll().length > 0) {
+    operationId = stockerId + Utilities.getUuid();
+  }
   OperationHistory.appendRow([stockerId, stockerName, stockCount, lastBuyDate, lastUnsealDate, notifyThreshold, category, operationTimestamp, operationUser, operationFunction,
-    operationStockerName, operationStockCount, operationNotifyThreshold, operationCategory]);
+    operationStockerName, operationStockCount, operationNotifyThreshold, operationCategory, operationId]);
 }
