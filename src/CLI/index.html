@@ -458,7 +458,7 @@
               vm.stockerList = response.data
             })
             .finally(() => vm.loading = false)
-          loadCategoryList();
+          await loadCategoryList();
         },
 
         addStock (item) {
