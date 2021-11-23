@@ -393,7 +393,7 @@
                 <v-dialog v-model="undoDialog" max-width="500px">
                   <v-card :loading="undoLoading">
                     <v-card-title class="text-h5">操作を取り消しますか？</v-card-title>
-                    <v-card-text>{{ vm.historyText }}</v-card-text>
+                    <v-card-text>{{ historyText }}</v-card-text>
                     <v-card-actions>
                       <v-spacer></v-spacer>
                       <v-btn color="blue darken-1" text @click="closeUndoDialog">キャンセル</v-btn>
@@ -718,10 +718,10 @@
           this.undoLoading = true;
           await axios.get('<?=TARGET_URL_GETLASTHISTORY?>' + item.StockerID)
             .then(response => {
-              vm.historyText = 'ストック名：' + response.data.StockerName + '\nストック数：' + response.data.StockCount + '\n最終購入日：' + response.data.LastBuyDate
+              this.historyText = 'ストック名：' + response.data.StockerName + '\nストック数：' + response.data.StockCount + '\n最終購入日：' + response.data.LastBuyDate
                   + '\n最終開封日：' + response.data.LastUnsealDate + '\n通知閾値：' + response.data.NotifyThreshold;
-              vm.historyItem.StockerID = response.data.StockerID;
-              vm.historyItem.Timestamp = response.data.OperationTimestamp;
+              this.historyItem.StockerID = response.data.StockerID;
+              this.historyItem.Timestamp = response.data.OperationTimestamp;
             })
             .finally(() => {this.undoLoading = false; this.undoDialog = true});
         },
