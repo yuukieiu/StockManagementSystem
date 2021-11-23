@@ -67,7 +67,7 @@ function registerStocker(user, stockName, stockCount = 0, lastBuyDate = null, la
   // ------------------------
   // ストック追加
   // ------------------------
-  function addStock(user, stockId, stockCount = 0) {
+  function addStock(user, stockId, stockCount = 0, lastBuyDate) {
     const functionName = "ストック追加";
     writeStartLog(functionName);
 
@@ -78,7 +78,7 @@ function registerStocker(user, stockName, stockCount = 0, lastBuyDate = null, la
     }
 
     try {
-        var result = addStockCountById(user, stockId, stockCount);
+        var result = addStockCountById(user, stockId, stockCount, lastBuyDate);
     } catch (e) {
         returnValue.status = false;
         switch(e.message) {
@@ -99,7 +99,7 @@ function registerStocker(user, stockName, stockCount = 0, lastBuyDate = null, la
   // ------------------------
   // ストック使用
   // ------------------------
-  function useStock(user, stockId, stockCount = 0) {
+  function useStock(user, stockId, stockCount = 0, lastUnsealDate) {
     const functionName = "ストック使用";
     writeStartLog(functionName);
 
@@ -110,7 +110,7 @@ function registerStocker(user, stockName, stockCount = 0, lastBuyDate = null, la
     }
 
     try {
-        var result = subStockCountById(user, stockId, stockCount);
+        var result = subStockCountById(user, stockId, stockCount, lastUnsealDate);
     } catch (e) {
         returnValue.status = false;
         switch(e.message) {

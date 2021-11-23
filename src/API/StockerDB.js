@@ -146,7 +146,7 @@ function getStockById(stockerId = "") {
 // ------------------------
 // ストック補充(ストックID)
 // ------------------------
-function addStockCountById(user, stockId = "", addCount = 0) {
+function addStockCountById(user, stockId = "", addCount = 0, lastBuyDate) {
   // なにもなければ成功
   var result = true;
 
@@ -155,7 +155,7 @@ function addStockCountById(user, stockId = "", addCount = 0) {
 
   var currentCount = Stocker.getRange(target.RowIndex, GetItemColumnNum(STOCKER_COUNT)).getValue();
   writeValueInCell(STOCKER_COUNT, target.RowIndex, currentCount + addCount);
-  writeValueInCell(LAST_BUY_DATE, target.RowIndex, new Date());
+  writeValueInCell(LAST_BUY_DATE, target.RowIndex, lastBuyDate);
 
   // 操作履歴書き込み
   addOperationHistory(target.StockerID, target.StockerName, target.StockCount, target.LastBuyDate, target.LastUnsealDate, target.NotifyThreshold,
@@ -166,7 +166,7 @@ function addStockCountById(user, stockId = "", addCount = 0) {
 // ------------------------
 // ストック使用(ストックID)
 // ------------------------
-function subStockCountById(user, stockId = "", subCount = 0) {
+function subStockCountById(user, stockId = "", subCount = 0, lastUnsealDate) {
   // なにもなければ成功
   var result = true;
 
@@ -177,7 +177,7 @@ function subStockCountById(user, stockId = "", subCount = 0) {
   if (currentCount < subCount) throw new Error(DB_NOT_ENOUGH_TO_USE_STOCK_EXCEPTION);
 
   writeValueInCell(STOCKER_COUNT, target.RowIndex, currentCount - subCount);
-  writeValueInCell(LAST_UNSEAL_DATE, target.RowIndex, new Date());
+  writeValueInCell(LAST_UNSEAL_DATE, target.RowIndex, lastUnsealDate);
 
   // 操作履歴書き込み
   addOperationHistory(target.StockerID, target.StockerName, target.StockCount, target.LastBuyDate, target.LastUnsealDate, target.NotifyThreshold,

@@ -39,10 +39,10 @@ function doGet(e) {
         result = registerStocker(userData.email, jsonData.stocker.name, jsonData.stocker.count, jsonData.stocker.lastbuydate, jsonData.stocker.lastunsealdate, jsonData.stocker.notifythreshold, jsonData.stocker.category);
         break;
       case "push" :
-        result = addStock(userData.email, jsonData.stocker.id, jsonData.stocker.count);
+        result = addStock(userData.email, jsonData.stocker.id, jsonData.stocker.count, jsonData.stocker.lastbuydate);
         break;
       case "pop" :
-        result = useStock(userData.email, jsonData.stocker.id, jsonData.stocker.count);
+        result = useStock(userData.email, jsonData.stocker.id, jsonData.stocker.count, jsonData.stocker.lastunsealdate);
         break;
       case "delete" :
         result = deleteStocker(userData.email, jsonData.stocker.id);

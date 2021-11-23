@@ -226,6 +226,28 @@
                               required
                             ></v-select>
                           </v-col>
+                          <v-col cols="12" sm="6" md="4">
+                            <v-menu
+                              v-model="lastByDateMenu"
+                              :close-on-content-click="false"
+                              :nudge-right="40"
+                              transition="scale-transition"
+                              offset-y
+                              min-width="auto"
+                            >
+                            <template v-slot:activator="{ on, attrs }">
+                              <v-text-field
+                                v-model="editedItem.LastBuyDate"
+                                label="最終購入日"
+                                prepend-icon="mdi-calendar"
+                                v-bind="attrs"
+                                v-on="on"
+                                readonly
+                              >
+                              </v-text-field>
+                            </template>
+                            <v-date-picker v-model="editedItem.LastBuyDate" @input="lastByDateMenu = false"/>
+                          </v-col>
                         </v-row>
                       </v-container>
                     </v-card-text>
@@ -255,6 +277,28 @@
                               label="使用ストック数"
                               required
                             ></v-select>
+                          </v-col>
+                          <v-col cols="12" sm="6" md="4">
+                            <v-menu
+                              v-model="lastUnsealDateMenu"
+                              :close-on-content-click="false"
+                              :nudge-right="40"
+                              transition="scale-transition"
+                              offset-y
+                              min-width="auto"
+                            >
+                            <template v-slot:activator="{ on, attrs }">
+                              <v-text-field
+                                v-model="editedItem.LastUnsealDate"
+                                label="最終開封日"
+                                prepend-icon="mdi-calendar"
+                                v-bind="attrs"
+                                v-on="on"
+                                readonly
+                              >
+                              </v-text-field>
+                            </template>
+                            <v-date-picker v-model="editedItem.LastUnsealDate" @input="lastUnsealDateMenu = false"/>
                           </v-col>
                         </v-row>
                       </v-container>
@@ -486,7 +530,8 @@
             method: 'push',
             stocker: {
               id: this.editedItem.StockerID,
-              count: this.editedItem.StockCount
+              count: this.editedItem.StockCount,
+              lastbuydate: this.editedItem.LastBuyDate
             }
           });
           //alert('以下のデータを送信するよ。\n' + params)
@@ -517,7 +562,8 @@
             method: 'pop',
             stocker: {
               id: this.editedItem.StockerID,
-              count: this.editedItem.StockCount
+              count: this.editedItem.StockCount,
+              lastunsealdate: this.editedItem.LastUnsealDate
             }
           });
           //alert('以下のデータを送信するよ。\n' + params)
