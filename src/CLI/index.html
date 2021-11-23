@@ -453,6 +453,10 @@
         async initialize () {
           let vm = this
           vm.loading = true
+          await axios.get('<?=TARGET_URL_GETCATEGORY?>')
+            .then(response => {
+              vm.categoryList = response.data
+            });
           await axios.get('<?=TARGET_URL?>')
             .then(response => {
               vm.stockerList = response.data
@@ -590,7 +594,7 @@
           this.editedIndex = this.stockerList.indexOf(item)
           this.editedItem = Object.assign({}, item)
           this.editedItem.TargetStockerName = this.editedItem.StockerName
-          await loadCategoryList();
+          //await loadCategoryList();
         },
 
         async edit () {
