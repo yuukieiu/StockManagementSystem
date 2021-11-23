@@ -317,7 +317,7 @@
                           <v-col cols="12" sm="6" md="4">
                             <v-combobox
                               v-model="editedItem.Category"
-                              :items="this.categoryList"
+                              :items="categoryList"
                               label="分類"
                             ></v-combobox>
                           </v-col>
@@ -453,12 +453,12 @@
         async initialize () {
           let vm = this
           vm.loading = true
+          await loadCategoryList()
           await axios.get('<?=TARGET_URL?>')
             .then(response => {
               vm.stockerList = response.data
             })
             .finally(() => vm.loading = false)
-          await loadCategoryList();
         },
 
         addStock (item) {
