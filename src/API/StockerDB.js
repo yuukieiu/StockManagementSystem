@@ -291,7 +291,7 @@ function undoStockerOperationById(stockerId = "", operationId) {
   writeValueInCell(NOTIFY_THRESHOLD, target.RowIndex, history.NotifyThreshold);
   writeValueInCell(CATEGORY, target.RowIndex, history.Category);
 
-  OperationHistory.deleteRow(history.RowIndex);
+  OperationHistory.deleteRow(history.RowIndex+1);
 
   return result;
 }
