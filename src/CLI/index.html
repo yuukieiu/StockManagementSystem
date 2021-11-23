@@ -512,6 +512,7 @@
           this.editedIndex = this.stockerList.indexOf(item)
           this.editedItem = Object.assign({}, item)
           this.editedItem.StockCount = 1
+          this.editedItem.LastBuyDate = (new Date()).toISOString().substr(0, 10)
           this.addDialog = true
         },
 
@@ -544,6 +545,7 @@
           this.editedIndex = this.stockerList.indexOf(item)
           this.editedItem = Object.assign({}, item)
           this.editedItem.StockCount = 1
+          this.editedItem.LastUnsealDate = (new Date()).toISOString().substr(0, 10)
           this.subDialog = true
         },
 
