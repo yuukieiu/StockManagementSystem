@@ -475,8 +475,8 @@
           StockerName: '',
           StockCount: 0,
           Category: '',
-          LastBuyDate: (new Date()).toISOString().substr(0, 10).replace('-','/'),
-          LastUnsealDate: (new Date()).toISOString().substr(0, 10).replace('-','/'),
+          LastBuyDate: (new Date()).toISOString().substr(0, 10).replace(/-/g, '/'),
+          LastUnsealDate: (new Date()).toISOString().substr(0, 10).replace(/-/g, '/'),
           NotifyThreshold: 0,
         },
         defaultItem: {
@@ -485,8 +485,8 @@
           StockerName: '',
           StockCount: 0,
           Category: '',
-          LastBuyDate: (new Date()).toISOString().substr(0, 10).replace('-','/'),
-          LastUnsealDate: (new Date()).toISOString().substr(0, 10).replace('-','/'),
+          LastBuyDate: (new Date()).toISOString().substr(0, 10).replace(/-/g, '/'),
+          LastUnsealDate: (new Date()).toISOString().substr(0, 10).replace(/-/g, '/'),
           NotifyThreshold: 0,
         },
         numberItems: [1,2,3,4,5],
@@ -534,7 +534,7 @@
           this.editedIndex = this.stockerList.indexOf(item)
           this.editedItem = Object.assign({}, item)
           this.editedItem.StockCount = 1
-          this.editedItem.LastBuyDate = (new Date()).toISOString().substr(0, 10).replace('-','/')
+          this.editedItem.LastBuyDate = (new Date()).toISOString().substr(0, 10).replace(/-/g, '/')
           this.addDialog = true
         },
 
@@ -567,7 +567,7 @@
           this.editedIndex = this.stockerList.indexOf(item)
           this.editedItem = Object.assign({}, item)
           this.editedItem.StockCount = 1
-          this.editedItem.LastUnsealDate = (new Date()).toISOString().substr(0, 10).replace('-','/')
+          this.editedItem.LastUnsealDate = (new Date()).toISOString().substr(0, 10).replace(/-/g, '/')
           this.subDialog = true
         },
 

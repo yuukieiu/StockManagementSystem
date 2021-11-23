@@ -74,7 +74,7 @@ function getStockAll() {
 // ------------------------
 function getOperationHistoryAll() {
   var result = [];
-  var historyArrays = OperationHistory.getRange(DATA_START_ROW,GetItemColumnNum(STOCKER_ID),Stocker.getLastRow()-1,GetItemColumnNum(OPERATION_CATEGORY)).getValues();
+  var historyArrays = OperationHistory.getRange(DATA_START_ROW,GetItemColumnNum(STOCKER_ID),OperationHistory.getLastRow()-1,GetItemColumnNum(OPERATION_CATEGORY)).getValues();
   for (var i = 0; i < historyArrays.length; i++) {
     var stock = {
       StockerID       : historyArrays[i][GetItemColumnNum(STOCKER_ID)-1],        // ストックID
