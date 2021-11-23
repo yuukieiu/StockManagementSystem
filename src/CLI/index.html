@@ -394,8 +394,12 @@
                   </template>
                   <v-card :loading="undoLoading">
                     <v-card-title class="text-h5">操作を取り消しますか？</v-card-title>
-                    <v-card-text>最後の操作を取り消し、下記の状態に戻します。</v-card-text>
-                    {{ historyText }}
+                    <v-card-text>
+                      <p>最後の操作を取り消し、下記の状態に戻します。</p>
+                      <div v-for="(text, index) in historyText.split('\n')" :key="index" class="text--primary">
+                        {{ text }}
+                      </div>
+                    </v-card-text>
                     <v-card-actions>
                       <v-spacer></v-spacer>
                       <v-btn color="blue darken-1" text @click="closeUndoDialog">キャンセル</v-btn>
@@ -453,7 +457,7 @@
         deleteDialog: false,
         editDialog: false,
         undoDialog: false,
-        historyText: '<div class="text--primary">読み込み中…</div>',
+        historyText: '読み込み中…',
         lastByDateMenu: false,
         lastUnsealDateMenu: false,
         snackbar: false,
@@ -725,8 +729,8 @@
           this.undoLoading = true;
           await axios.get('<?=TARGET_URL_GETLASTHISTORY?>' + item.StockerID)
             .then(response => {
-              this.historyText = '<div class="text--primary">ストック名：' + response.data.StockerName + '<br>ストック数：' + response.data.StockCount + '<br>最終購入日：' + response.data.LastBuyDate
-                  + '<br>最終開封日：' + response.data.LastUnsealDate + '<br>通知閾値：' + response.data.NotifyThreshold + '</div>';
+              this.historyText = 'ストック名：' + response.data.StockerName + '\nストック数：' + response.data.StockCount + '\n最終購入日：' + response.data.LastBuyDate
+                  + '\n最終開封日：' + response.data.LastUnsealDate + '\n通知閾値：' + response.data.NotifyThreshold;
               this.historyItem.StockerID = response.data.StockerID;
               this.historyItem.Timestamp = response.data.OperationTimestamp;
             })
