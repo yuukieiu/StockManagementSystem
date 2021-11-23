@@ -453,7 +453,7 @@
         deleteDialog: false,
         editDialog: false,
         undoDialog: false,
-        historyText: '',
+        historyText: '<div class="text--primary">読み込み中…</div>',
         lastByDateMenu: false,
         lastUnsealDateMenu: false,
         snackbar: false,
@@ -667,6 +667,7 @@
 
         closeUndoDialog () {
           this.undoDialog = false
+          this.historyText = '<div class="text--primary">読み込み中…</div>'
         },
 
         async create () {
@@ -724,8 +725,8 @@
           this.undoLoading = true;
           await axios.get('<?=TARGET_URL_GETLASTHISTORY?>' + item.StockerID)
             .then(response => {
-              this.historyText = 'ストック名：' + response.data.StockerName + '\nストック数：' + response.data.StockCount + '\n最終購入日：' + response.data.LastBuyDate
-                  + '\n最終開封日：' + response.data.LastUnsealDate + '\n通知閾値：' + response.data.NotifyThreshold;
+              this.historyText = '<div class="text--primary">ストック名：' + response.data.StockerName + '<br>ストック数：' + response.data.StockCount + '<br>最終購入日：' + response.data.LastBuyDate
+                  + '<br>最終開封日：' + response.data.LastUnsealDate + '<br>通知閾値：' + response.data.NotifyThreshold + '</div>';
               this.historyItem.StockerID = response.data.StockerID;
               this.historyItem.Timestamp = response.data.OperationTimestamp;
             })
