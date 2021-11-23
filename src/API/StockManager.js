@@ -223,3 +223,40 @@ function updateStocker(user, targetStockerId = "", newStockerName, newCategory, 
   writeEndLog(functionName);
   return returnValue;
 }
+
+// ------------------------
+// 最終操作履歴取得
+// ------------------------
+function getLastOperationHistory(targetStockerId) {
+  const functionName = "最終操作履歴取得";
+  writeStartLog(functionName);
+
+  var history = getLastOperationHistoryById(targetStockerId);
+
+  writeEndLog(functionName);
+  return history;
+}
+
+// ------------------------
+// 操作取り消し
+// ------------------------
+function undoStockerOperation(targetStockerId, operationTimestamp) {
+  const functionName = "操作取り消し";
+  writeStartLog(functionName);
+
+  try {
+    var result = undoStockerOperationById(targetStockerId, operationTimestamp);
+  } catch (e) {
+    returnValue.status = false;
+    switch(e.message) {
+      case DB_EMPTY_STOCK_OBJECT_EXCEPTION:
+        returnValue.message = "指定のストックが存在しないため操作取り消しできませんでした。";
+        break;
+      default:
+        returnValue.message = "操作取り消しできませんでした。データ：" + targetStockerId;
+        break;
+    }
+  }
+  writeEndLog(functionName);
+  return result;
+}

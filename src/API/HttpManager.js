@@ -6,12 +6,13 @@ function doGet(e) {
     var result;
     if (e.parameter.p1 == "getcat") {
       result = getCategoryList();
+    } else if (e.parameter.p1 == "gethis") {
+      result = getLastOperationHistory(e.parameter.p2);
     } else {
       result = getStockerList();
     }
     output.setContent(JSON.stringify(result));
 
-    //return HtmlService.createTemplateFromFile('index').evaluate();
     return output;
   }
 
@@ -61,6 +62,9 @@ function doGet(e) {
         break;
       case "edit" :
         result = updateStocker(userData.email, jsonData.stocker.id, jsonData.stocker.newname, jsonData.stocker.newcategory, jsonData.stocker.newnotifythreshold);
+        break;
+      case "undo" :
+        result = undoStockerOperation(jsonData.stocker.id, jsonData.stocker.operationtimestamp);
         break;
       default:
         break;

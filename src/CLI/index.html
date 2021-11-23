@@ -383,6 +383,26 @@
                     </v-card-actions>
                   </v-card>
                 </v-dialog>
+                <!--操作取り消しダイアログ-->
+                <v-dialog v-model="undoDialog" max-width="500px">
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn color="indigo" dark small class="mx-2" fab v-bind="attrs" v-on="on" @click="undoOperation(item)">
+                      <v-icon dark>
+                        undo
+                      </v-icon>
+                    </v-btn>
+                  </template>
+                  <v-card>
+                    <v-card-title class="text-h5">操作を取り消しますか？</v-card-title>
+                    <v-card-text>{{ this.historyText }}</v-card-text>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="blue darken-1" text @click="closeUndoDialog">キャンセル</v-btn>
+                      <v-btn color="blue darken-1" text @click="undoItemConfirm">OK</v-btn>
+                      <v-spacer></v-spacer>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
                 <!--ストック品削除ダイアログ-->
                 <v-icon
                   large
@@ -430,6 +450,8 @@
         subDialog: false,
         deleteDialog: false,
         editDialog: false,
+        undoDialog: false,
+        historyText: '',
         lastByDateMenu: false,
         lastUnsealDateMenu: false,
         snackbar: false,
@@ -619,6 +641,10 @@
           })
         },
 
+        closeUndoDialog () {
+          this.undoDialog = false
+        },
+
         async create () {
           var params = JSON.stringify({
             encryptedEmail: '<?=ENCRYPTED_ACTIVE_USER?>',
@@ -668,6 +694,14 @@
           this.snackbarText = response.data.message
           this.snackbar = true
           this.overlay = false
+        },
+
+        async undoOperation(item) {
+          await axios.get('<?=TARGET_URL_GETLASTHISTORY?>' + item.StockerID)
+            .then(response => {
+              this.historyText = 'ストック名：' + response.data.StockerName + '\nストック数：' + response.data.StockCount + '\n最終購入日：' + response.data.LastBuyDate
+                  + '\n最終開封日：' + response.data.LastUnsealDate + '\n通知閾値：' + response.data.NotifyThreshold;
+            });
         },
       }
     })

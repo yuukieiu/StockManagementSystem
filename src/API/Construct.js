@@ -29,7 +29,7 @@ const OPERATION_TIMESTAMP ="OperationTimestamp";
 const OPERATION_USER = "OperationUser";
 
 // 操作内容
-const OPERATION_FUNCTION = "OparationFunction";
+const OPERATION_FUNCTION = "OperationFunction";
 
 // ストック品名（操作後）
 const OPERATION_STOCKER_NAME = "OperationStockerName";

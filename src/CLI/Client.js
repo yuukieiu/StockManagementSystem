@@ -2,6 +2,8 @@ const TARGET_URL = PropertiesService.getScriptProperties().getProperty("TARGET_U
 
 const TARGET_URL_GETCATEGORY = TARGET_URL + "?p1=getcat";
 
+const TARGET_URL_GETLASTHISTORY = TARGET_URL + "?p1=gethis&p2=";
+
 const CLIENT_URL = ScriptApp.getService().getUrl();
 
 const ACTIVE_USER = Session.getActiveUser().getEmail();

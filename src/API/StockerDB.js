@@ -70,6 +70,35 @@ function getStockAll() {
 }
 
 // ------------------------
+// 操作履歴全取得
+// ------------------------
+function getOperationHistoryAll() {
+  var result = [];
+  var historyArrays = OperationHistory.getRange(DATA_START_ROW,GetItemColumnNum(STOCKER_ID),Stocker.getLastRow()-1,GetItemColumnNum(OPERATION_CATEGORY)).getValues();
+  for (var i = 0; i < historyArrays.length; i++) {
+    var stock = {
+      StockerID       : historyArrays[i][GetItemColumnNum(STOCKER_ID)-1],        // ストックID
+      StockerName     : historyArrays[i][GetItemColumnNum(STOCKER_NAME)-1],      // ストック品名
+      StockCount      : historyArrays[i][GetItemColumnNum(STOCKER_COUNT)-1],     // ストック数
+      LastBuyDate     : Utilities.formatDate(historyArrays[i][GetItemColumnNum(LAST_BUY_DATE)-1],"JST", "yyyy/MM/dd"),     // 最終購入日
+      LastUnsealDate  : Utilities.formatDate(historyArrays[i][GetItemColumnNum(LAST_UNSEAL_DATE)-1],"JST", "yyyy/MM/dd"),  // 最終開封日
+      NotifyThreshold : historyArrays[i][GetItemColumnNum(NOTIFY_THRESHOLD)-1],  // 通知閾値
+      Category        : historyArrays[i][GetItemColumnNum(CATEGORY)-1],          // 分類
+      OperationTimestamp : Utilities.formatDate(historyArrays[i][GetItemColumnNum(OPERATION_TIMESTAMP)-1],"JST", "yyyy/MM/dd"),  // 操作日
+      OperationUser   : historyArrays[i][GetItemColumnNum(OPERATION_USER)-1],    // 操作ユーザ
+      OperationFunction : historyArrays[i][GetItemColumnNum(OPERATION_FUNCTION)-1], // 操作
+      OperationStockerName : historyArrays[i][GetItemColumnNum(OPERATION_STOCKER_NAME)-1], // ストック名（操作後）
+      OperationStockCount : historyArrays[i][GetItemColumnNum(OPERATION_STOCKER_COUNT)-1], // ストック数（操作後）
+      OperationNotifyThreshold : historyArrays[i][GetItemColumnNum(OPERATION_NOTIFY_THRESHOLD)-1], // 通知閾値（操作後）
+      OperationCategory : historyArrays[i][GetItemColumnNum(OPERATION_CATEGORY)-1], // 分類（操作後）
+      RowIndex        : i
+    }
+    result.push(stock);
+  }
+  return result;
+}
+
+// ------------------------
 // 分類一覧取得
 // ------------------------
 function getCategoryAll() {
@@ -140,6 +169,30 @@ function getStockById(stockerId = "") {
     }
   }
   return stock;
+}
+
+// ------------------------
+// 最終操作履歴取得(ストックID)
+// ------------------------
+function getLastOperationHistoryById(stockerId = "") {
+  var operationHistories = getOperationHistoryAll();
+  var operationHistoriesStocker = [];
+  for (var i = 0; i < operationHistories.length; i++) {
+    if (operationHistories[i].StockerID == stockerId) {
+      operationHistoriesStocker.push(operationHistories[i]);
+    }
+  }
+
+  if (operationHistoriesStocker.length == 0) throw new Error(DB_EMPTY_STOCK_OBJECT_EXCEPTION);
+
+  // 0番目が最新になるようソート
+  operationHistoriesStocker.sort(function(a,b) {
+    if (a.OperationTimestamp < b.OperationTimestamp) return 1;
+    if (a.OperationTimestamp > b.OperationTimestamp) return -1;
+    return 0;
+  })
+
+  return operationHistoriesStocker[0];
 }
 
 // ★★★Update★★★
@@ -213,6 +266,32 @@ function updateStockInfoById(user, targetStockerID = "", newStockerName, newCate
   // 操作履歴書き込み
   addOperationHistory(target.StockerID, target.StockerName, target.StockCount, target.LastBuyDate, target.LastUnsealDate, target.NotifyThreshold,
     target.Category, user, "edit", newStockerName, "", newNotifyThreshold, newCategory);
+  return result;
+}
+
+// ------------------------
+// ストック情報戻し（ストックID）
+// ------------------------
+function undoStockerOperationById(stockerId = "", operationTimestamp) {
+  // なにもなければ成功
+  var result = true;
+
+  var history = getLastOperationHistoryById(stockerId);
+  if (history == null) throw new Error(DB_EMPTY_STOCK_OBJECT_EXCEPTION);
+  if (history.OperationTimestamp != operationTimestamp) throw new Error(DB_EMPTY_STOCK_OBJECT_EXCEPTION);
+
+  var target = getStockById(stockerId);
+  if (target == null) throw new Error(DB_EMPTY_STOCK_OBJECT_EXCEPTION);
+
+  writeValueInCell(STOCKER_NAME, target.RowIndex, history.StockerName);
+  writeValueInCell(STOCKER_COUNT, target.RowIndex, history.StockCount);
+  writeValueInCell(LAST_BUY_DATE, target.RowIndex, history.LastBuyDate);
+  writeValueInCell(LAST_UNSEAL_DATE,target.RowIndex, history.LastUnsealDate);
+  writeValueInCell(NOTIFY_THRESHOLD, target.RowIndex, history.NotifyThreshold);
+  writeValueInCell(CATEGORY, target.RowIndex, history.Category);
+
+  OperationHistory.deleteRow(history.RowIndex);
+
   return result;
 }
 
