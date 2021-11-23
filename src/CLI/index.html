@@ -453,7 +453,6 @@
         async initialize () {
           let vm = this
           vm.loading = true
-          await loadCategoryList()
           await axios.get('<?=TARGET_URL?>')
             .then(response => {
               vm.stockerList = response.data
@@ -587,10 +586,11 @@
           this.initialize()
         },
 
-        editStock (item) {
+        async editStock (item) {
           this.editedIndex = this.stockerList.indexOf(item)
           this.editedItem = Object.assign({}, item)
           this.editedItem.TargetStockerName = this.editedItem.StockerName
+          await loadCategoryList();
         },
 
         async edit () {
@@ -622,9 +622,8 @@
         async loadCategoryList() {
           await axios.get('<?=TARGET_URL_GETCATEGORY?>')
             .then(response => {
-              vm.categoryList = response.data
+              this.categoryList = response.data
             })
-            .catch(error => console.log(error))
         },
       }
     })
