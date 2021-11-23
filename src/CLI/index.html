@@ -113,7 +113,7 @@
                 <!--ストック品追加ダイアログ-->
                 <v-dialog v-model="createDialog" max-width="500px">
                   <template v-slot:activator="{ on, attrs }">
-                    <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on" @click="loadCategoryList">ストック品追加</v-btn>
+                    <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">ストック品追加</v-btn>
                   </template>
                   <v-card>
                     <v-card-title>
@@ -594,7 +594,6 @@
           this.editedIndex = this.stockerList.indexOf(item)
           this.editedItem = Object.assign({}, item)
           this.editedItem.TargetStockerName = this.editedItem.StockerName
-          //await loadCategoryList();
         },
 
         async edit () {
@@ -621,13 +620,6 @@
           this.snackbarText = response.data.message
           this.snackbar = true
           this.overlay = false
-        },
-
-        async loadCategoryList() {
-          await axios.get('<?=TARGET_URL_GETCATEGORY?>')
-            .then(response => {
-              this.categoryList = response.data
-            })
         },
       }
     })
