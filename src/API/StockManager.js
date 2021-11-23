@@ -263,5 +263,5 @@ function undoStockerOperation(targetStockerId, operationTimestamp) {
     }
   }
   writeEndLog(functionName);
-  return result;
+  return returnValue;
 }
