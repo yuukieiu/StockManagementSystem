@@ -737,7 +737,7 @@
           await axios.get('<?=TARGET_URL_GETLASTHISTORY?>' + item.StockerID)
             .then(response => {
               this.historyText = 'ストック名：' + response.data.StockerName + '\nストック数：' + response.data.StockCount + '\n最終購入日：' + response.data.LastBuyDate
-                  + '\n最終開封日：' + response.data.LastUnsealDate + '\n通知閾値：' + response.data.NotifyThreshold + '\n\n・取り消す操作内容\n操作：' + operationConvert[response.data.OperationFunction]
+                  + '\n最終開封日：' + response.data.LastUnsealDate + '\n通知閾値：' + response.data.NotifyThreshold + '\n\n・取り消す操作内容\n操作：' + this.operationConvert[response.data.OperationFunction]
                   + '\n操作日時：' + response.data.OperationTimestamp + '\n操作ユーザ：' + response.data.OperationUser + '\n編集ストック名：' + response.data.OperationStockerName
                   + '\n操作ストック数：' + response.data.OperationStockCount + '\n操作通知閾値：' + response.data.OperationNotifyThreshold + '\n操作カテゴリ：'
                   + response.data.OperationCategory;
