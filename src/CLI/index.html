@@ -746,10 +746,10 @@
           this.undoLoading = true;
           await axios.get('<?=TARGET_URL_GETLASTHISTORY?>' + item.StockerID)
             .then(response => {
-              alert(response);
+              alert(typeof　response.data.StockerName);
               if (typeof response.data.StockerName === 'undefined') {
                 this.historyText = '戻せる操作履歴がありませんでした。';
-                this.operationText = '';
+                this.operationText = '取り消す操作がありません。';
                 this.isUndoConfirmDisabled = true;
               } else {
                 this.historyText = 'ストック名：' + response.data.StockerName + '\nストック数：' + response.data.StockCount + '\n最終購入日：' + response.data.LastBuyDate
