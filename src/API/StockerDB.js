@@ -179,12 +179,12 @@ function getLastOperationHistoryById(stockerId = "") {
   var operationHistories = getOperationHistoryAll();
   var operationHistoriesStocker = [];
   for (var i = 0; i < operationHistories.length; i++) {
-    if (operationHistories[i].StockerID == stockerId) {
+    if (operationHistories[i].StockerID == stockerId && operationHistories[i].OperationFunction != "create" && operationHistories[i].OperationFunction != "delete") {
       operationHistoriesStocker.push(operationHistories[i]);
     }
   }
 
-  if (operationHistoriesStocker.length == 0) throw new Error(DB_EMPTY_STOCK_OBJECT_EXCEPTION);
+  if (operationHistoriesStocker.length == 0) throw new Error(DB_EMPTY_OPERATION_HISTORY);
 
   // 0番目が最新になるようソート
   operationHistoriesStocker.sort(function(a,b) {

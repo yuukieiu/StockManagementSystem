@@ -19,3 +19,6 @@ const DB_NOT_ENOUGH_TO_USE_STOCK_EXCEPTION ="NotEnoughToUseStockException";
 
 // ストック数チェック不可
 const CANT_CHECK_STOCK_COUNT_EXCEPTION = "CantCheckStockCountException";
+
+// 操作履歴無し
+const DB_EMPTY_OPERATION_HISTORY = "EmptyOperationHistory";
