@@ -400,8 +400,10 @@
                       <div v-for="(text, index) in historyText.split('\n')" :key="index" class="text--primary">
                         {{ text }}
                       </div>
-                      <v-divider class="mx-4"></v-divider>
-                      <p>取り消す操作</p>
+                    </v-card-text>
+                    <v-divider class="mx-4"></v-divider>
+                    <v-card-text>
+                      <v-card-title class="text-h6">取り消す操作</v-card-title>
                       <div v-for="(text, index) in operationText.split('\n')" :key="index" class="text--primary">
                         {{ text }}
                       </div>
@@ -744,6 +746,11 @@
           this.undoLoading = true;
           await axios.get('<?=TARGET_URL_GETLASTHISTORY?>' + item.StockerID)
             .then(response => {
+              if (typeof response === 'undefined') {
+                this.historyText = '戻せる操作履歴がありませんでした。';
+                this.operationText = '';
+                this.isUndoConfirmDisabled = false;
+              }
               this.historyText = 'ストック名：' + response.data.StockerName + '\nストック数：' + response.data.StockCount + '\n最終購入日：' + response.data.LastBuyDate
                   + '\n最終開封日：' + response.data.LastUnsealDate + '\n通知閾値：' + response.data.NotifyThreshold
               this.operationText = '操作：' + this.operationConvert[response.data.OperationFunction]
@@ -752,11 +759,6 @@
                   + response.data.OperationCategory;
               this.historyItem.StockerID = response.data.StockerID;
               this.historyItem.OperationID = response.data.OperationID;
-            })
-            .catch(function (error) {
-              this.historyText = '戻せる操作履歴がありませんでした。';
-              this.operationText = '';
-              this.isUndoConfirmDisabled = false;
             })
             .finally(() => {this.undoLoading = false});
         },
