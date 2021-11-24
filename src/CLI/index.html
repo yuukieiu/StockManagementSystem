@@ -746,8 +746,7 @@
           this.undoLoading = true;
           await axios.get('<?=TARGET_URL_GETLASTHISTORY?>' + item.StockerID)
             .then(response => {
-              alert(response.data);
-              if (typeof response.data.StockerName === 'undefined') {
+              if (response.data == null) {
                 this.historyText = '戻せる操作履歴がありませんでした。';
                 this.operationText = '取り消す操作がありません。';
                 this.isUndoConfirmDisabled = true;
