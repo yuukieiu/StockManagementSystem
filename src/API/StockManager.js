@@ -231,7 +231,19 @@ function getLastOperationHistory(targetStockerId) {
   const functionName = "最終操作履歴取得";
   writeStartLog(functionName);
 
-  var history = getLastOperationHistoryById(targetStockerId);
+
+  var history = null;
+  try {
+    history = getLastOperationHistoryById(targetStockerId);
+  } catch(e) {
+    switch(e.message) {
+      case DB_EMPTY_OPERATION_HISTORY:
+        break;
+      default:
+        throw new Error(e.message);
+        break;
+    }
+  }
 
   writeEndLog(functionName);
   return history;
