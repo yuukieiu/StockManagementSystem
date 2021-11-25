@@ -146,7 +146,7 @@
                           </v-col>
                           <v-col cols="12" sm="6" md="4">
                             <v-menu
-                              v-model="lastByDateMenu"
+                              v-model="lastBuyDateMenuCreate"
                               :close-on-content-click="false"
                               :nudge-right="40"
                               transition="scale-transition"
@@ -164,11 +164,11 @@
                               >
                               </v-text-field>
                             </template>
-                            <v-date-picker v-model="editedItem.LastBuyDate" @input="formatLastBuyDate(editedItem.LastBuyDate)"/>
+                            <v-date-picker v-model="editedItem.LastBuyDate" @input="formatDate(editedItem.LastBuyDate, editedItem.LastBuyDateDisplay, lastBuyDateMenuCreate)"/>
                           </v-col>
                           <v-col cols="12" sm="6" md="4">
                             <v-menu
-                              v-model="lastUnsealDateMenu"
+                              v-model="lastUnsealDateMenuCreate"
                               :close-on-content-click="false"
                               :nudge-right="40"
                               transition="scale-transition"
@@ -186,7 +186,7 @@
                               >
                               </v-text-field>
                             </template>
-                            <v-date-picker v-model="editedItem.LastUnsealDate" @input="formatLastUnsealDate(editedItem.LastUnsealDate)"/>
+                            <v-date-picker v-model="editedItem.LastUnsealDate" @input="formatDate(editedItem.LastUnsealDate, editedItem.LastUnsealDateDisplay, lastUnsealDateMenuCreate)"/>
                           </v-col>
                           <v-col cols="12" sm="6" md="4">
                             <v-select
@@ -227,7 +227,7 @@
                           </v-col>
                           <v-col cols="12" sm="6" md="4">
                             <v-menu
-                              v-model="lastByDateMenu"
+                              v-model="lastBuyDateMenuAdd"
                               :close-on-content-click="false"
                               :nudge-right="40"
                               transition="scale-transition"
@@ -245,7 +245,7 @@
                               >
                               </v-text-field>
                             </template>
-                            <v-date-picker v-model="editedItem.LastBuyDate" @input="formatLastBuyDate(editedItem.LastBuyDate)"/>
+                            <v-date-picker v-model="editedItem.LastBuyDate" @input="formatDate(editedItem.LastBuyDate, editedItem.LastBuyDateDisplay, lastBuyDateMenuAdd)"/>
                           </v-col>
                         </v-row>
                       </v-container>
@@ -279,7 +279,7 @@
                           </v-col>
                           <v-col cols="12" sm="6" md="4">
                             <v-menu
-                              v-model="lastUnsealDateMenu"
+                              v-model="lastUnsealDateMenuSub"
                               :close-on-content-click="false"
                               :nudge-right="40"
                               transition="scale-transition"
@@ -297,7 +297,7 @@
                               >
                               </v-text-field>
                             </template>
-                            <v-date-picker v-model="editedItem.LastUnsealDate" @input="formatLastUnsealDate(editedItem.LastUnsealDate)"/>
+                            <v-date-picker v-model="editedItem.LastUnsealDate" @input="formatDate(editedItem.LastUnsealDate, editedItem.LastUnsealDateDisplay, lastUnsealDateMenuSub)"/>
                           </v-col>
                         </v-row>
                       </v-container>
@@ -463,10 +463,12 @@
         undoDialog: false,
         historyText: '読み込み中…',
         operationText: '',
-        lastByDateMenu: false,
-        lastUnsealDateMenu: false,
+        lastBuyDateMenuCreate: false,
+        lastBuyDateMenuAdd: false,
+        lastUnsealDateMenuCreate: false,
+        lastUnsealDateMenuSub: false,
         snackbar: false,
-        snackbarText: 'Test',
+        snackbarText: '',
         isUndoConfirmDisabled: true,
         timeout: 2000,
         overlay: false,
@@ -558,19 +560,11 @@
             .finally(() => vm.loading = false)
         },
 
-        formatLastBuyDate(date) {
+        formatDate(date, display, menu) {
           if (!date) return null;
           const [year, month, day] = date.split("-");
-          this.editedItem.LastBuyDateDisplay = `${year}/${month}/${day}`;
-          this.lastBuyDateMenu = false;
-          return;
-        },
-
-        formatLastUnsealDate(date) {
-          if (!date) return null;
-          const [year, month, day] = date.split("-");
-          this.editedItem.LastUnsealDateDisplay = `${year}/${month}/${day}`;
-          this.lastUnsealDateMenu = false;
+          display = `${year}/${month}/${day}`;
+          menu = false;
           return;
         },
 
