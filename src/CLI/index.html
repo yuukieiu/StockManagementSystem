@@ -164,7 +164,7 @@
                               >
                               </v-text-field>
                             </template>
-                            <v-date-picker v-model="editedItem.LastBuyDate" @input="formatDate(editedItem.LastBuyDate, editedItem.LastBuyDateDisplay, lastBuyDateMenuCreate)"/>
+                            <v-date-picker v-model="editedItem.LastBuyDate" @input="formatDate(editedItem.LastBuyDate, 'LastBuyDateCreate')"/>
                           </v-col>
                           <v-col cols="12" sm="6" md="4">
                             <v-menu
@@ -186,7 +186,7 @@
                               >
                               </v-text-field>
                             </template>
-                            <v-date-picker v-model="editedItem.LastUnsealDate" @input="formatDate(editedItem.LastUnsealDate, editedItem.LastUnsealDateDisplay, lastUnsealDateMenuCreate)"/>
+                            <v-date-picker v-model="editedItem.LastUnsealDate" @input="formatDate(editedItem.LastUnsealDate, 'LastUnsealDateCreate')"/>
                           </v-col>
                           <v-col cols="12" sm="6" md="4">
                             <v-select
@@ -245,7 +245,7 @@
                               >
                               </v-text-field>
                             </template>
-                            <v-date-picker v-model="editedItem.LastBuyDate" @input="formatDate(editedItem.LastBuyDate, editedItem.LastBuyDateDisplay, lastBuyDateMenuAdd)"/>
+                            <v-date-picker v-model="editedItem.LastBuyDate" @input="formatDate(editedItem.LastBuyDate, 'LastBuyDateAdd')"/>
                           </v-col>
                         </v-row>
                       </v-container>
@@ -297,7 +297,7 @@
                               >
                               </v-text-field>
                             </template>
-                            <v-date-picker v-model="editedItem.LastUnsealDate" @input="formatDate(editedItem.LastUnsealDate, editedItem.LastUnsealDateDisplay, lastUnsealDateMenuSub)"/>
+                            <v-date-picker v-model="editedItem.LastUnsealDate" @input="formatDate(editedItem.LastUnsealDate, 'LastUnsealDateSub')"/>
                           </v-col>
                         </v-row>
                       </v-container>
@@ -560,11 +560,28 @@
             .finally(() => vm.loading = false)
         },
 
-        formatDate(date, display, menu) {
+        formatDate(date, mode) {
           if (!date) return null;
           const [year, month, day] = date.split("-");
-          display = `${year}/${month}/${day}`;
-          menu = false;
+
+          switch (mode) {
+            case 'LastBuyDateCreate':
+              this.editedItem.LastBuyDateDisplay = `${year}/${month}/${day}`;
+              this.lastBuyDateMenuCreate = false;
+              break;
+            case 'LastUnsealDateCreate':
+              this.editedItem.LastUnsealDateDisplay = `${year}/${month}/${day}`;
+              this.lastUnsealDateMenuCreate = false;
+              break;
+            case 'LastBuyDateAdd':
+              this.editedItem.LastBuyDateDisplay = `${year}/${month}/${day}`;
+              this.lastBuyDateMenuAdd = false;
+              break;
+            case 'LastUnsealDateSub':
+              this.editedItem.LastUnsealDateDisplay = `${year}/${month}/${day}`;
+              this.lastUnsealDateMenuSub = false;
+              break;
+          }
           return;
         },
 
