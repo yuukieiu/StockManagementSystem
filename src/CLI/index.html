@@ -7,7 +7,6 @@
   <link href="https://fonts.googleapis.com/css?family=Material+Icons" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  <script src="https://unpkg.com/vuejs-datepicker"></script>
   <style>
     .v-data-table td {
         background: #2c2c2c;
@@ -156,7 +155,7 @@
                             >
                             <template v-slot:activator="{ on, attrs }">
                               <v-text-field
-                                v-model="editedItem.LastBuyDate"
+                                v-model="editedItem.LastBuyDateDisplay"
                                 label="最終購入日"
                                 prepend-icon="mdi-calendar"
                                 v-bind="attrs"
@@ -165,7 +164,7 @@
                               >
                               </v-text-field>
                             </template>
-                            <v-date-picker v-model="editedItem.LastBuyDate" @input="lastByDateMenu = false"/>
+                            <v-date-picker v-model="editedItem.LastBuyDate" @input="formatLastBuyDate(editedItem.LastBuyDate)"/>
                           </v-col>
                           <v-col cols="12" sm="6" md="4">
                             <v-menu
@@ -178,7 +177,7 @@
                             >
                             <template v-slot:activator="{ on, attrs }">
                               <v-text-field
-                                v-model="editedItem.LastUnsealDate"
+                                v-model="editedItem.LastUnsealDateDisplay"
                                 label="最終開封日"
                                 prepend-icon="mdi-calendar"
                                 v-bind="attrs"
@@ -187,7 +186,7 @@
                               >
                               </v-text-field>
                             </template>
-                            <v-date-picker v-model="editedItem.LastUnsealDate" @input="lastUnsealDateMenu = false"/>
+                            <v-date-picker v-model="editedItem.LastUnsealDate" @input="formatLastUnsealDate(editedItem.LastUnsealDate)"/>
                           </v-col>
                           <v-col cols="12" sm="6" md="4">
                             <v-select
@@ -237,7 +236,7 @@
                             >
                             <template v-slot:activator="{ on, attrs }">
                               <v-text-field
-                                v-model="editedItem.LastBuyDate"
+                                v-model="editedItem.LastBuyDateDisplay"
                                 label="最終購入日"
                                 prepend-icon="mdi-calendar"
                                 v-bind="attrs"
@@ -246,7 +245,7 @@
                               >
                               </v-text-field>
                             </template>
-                            <v-date-picker v-model="editedItem.LastBuyDate" @input="lastByDateMenu = false"/>
+                            <v-date-picker v-model="editedItem.LastBuyDate" @input="formatLastBuyDate(editedItem.LastBuyDate)"/>
                           </v-col>
                         </v-row>
                       </v-container>
@@ -289,7 +288,7 @@
                             >
                             <template v-slot:activator="{ on, attrs }">
                               <v-text-field
-                                v-model="editedItem.LastUnsealDate"
+                                v-model="editedItem.LastUnsealDateDisplay"
                                 label="最終開封日"
                                 prepend-icon="mdi-calendar"
                                 v-bind="attrs"
@@ -298,7 +297,7 @@
                               >
                               </v-text-field>
                             </template>
-                            <v-date-picker v-model="editedItem.LastUnsealDate" @input="lastUnsealDateMenu = false"/>
+                            <v-date-picker v-model="editedItem.LastUnsealDate" @input="formatLastUnsealDate(editedItem.LastUnsealDate)"/>
                           </v-col>
                         </v-row>
                       </v-container>
@@ -334,7 +333,7 @@
             </template>
             <template v-slot:expanded-item="{ headers, item }">
               <td :colspan="headers.length">
-                分類： {{ item.Category }} 最終購入日： {{ item.LastBuyDate }} 最終開封日： {{ item.LastUnsealDate }}
+                分類： {{ item.Category }} 最終購入日： {{ item.LastBuyDate.replace(/-/g, '/') }} 最終開封日： {{ item.LastUnsealDate.replace(/-/g, '/') }}
                 <v-spacer></v-spacer>
                 <!--ストック情報更新ダイアログ-->
                 <v-dialog v-model="editDialog" max-width="500px">
@@ -450,9 +449,6 @@
       vuetify: new Vuetify({
         theme: { dark: true },
       }),
-      components: {
-        'vuejs-datepicker':vuejsDatepicker
-      },
       data: () => ({
         selected: [],
         stockerList: [],
@@ -491,8 +487,10 @@
           StockerName: '',
           StockCount: 0,
           Category: '',
-          LastBuyDate: (new Date()).toISOString().substr(0, 10).replace(/-/g, '/'),
-          LastUnsealDate: (new Date()).toISOString().substr(0, 10).replace(/-/g, '/'),
+          LastBuyDate: (new Date()).toISOString().substr(0, 10),
+          LastBuyDateDisplay: (new Date()).toISOString().substr(0, 10).replace(/-/g, '/'),
+          LastUnsealDate: (new Date()).toISOString().substr(0, 10),
+          LastUnsealDateDisplay: (new Date()).toISOString().substr(0, 10).replace(/-/g, '/'),
           NotifyThreshold: 0,
         },
         defaultItem: {
@@ -501,8 +499,10 @@
           StockerName: '',
           StockCount: 0,
           Category: '',
-          LastBuyDate: (new Date()).toISOString().substr(0, 10).replace(/-/g, '/'),
-          LastUnsealDate: (new Date()).toISOString().substr(0, 10).replace(/-/g, '/'),
+          LastBuyDate: (new Date()).toISOString().substr(0, 10),
+          LastBuyDateDisplay: (new Date()).toISOString().substr(0, 10).replace(/-/g, '/'),
+          LastUnsealDate: (new Date()).toISOString().substr(0, 10),
+          LastUnsealDateDisplay: (new Date()).toISOString().substr(0, 10).replace(/-/g, '/'),
           NotifyThreshold: 0,
         },
         historyItem: {
@@ -558,11 +558,28 @@
             .finally(() => vm.loading = false)
         },
 
+        formatLastBuyDate(date) {
+          if (!date) return null;
+          const [year, month, day] = date.split("-");
+          this.editedItem.LastBuyDateDisplay = `${year}/${month}/${day}`;
+          this.lastBuyDateMenu = false;
+          return;
+        },
+
+        formatLastUnsealDate(date) {
+          if (!date) return null;
+          const [year, month, day] = date.split("-");
+          this.editedItem.LastUnsealDateDisplay = `${year}/${month}/${day}`;
+          this.lastUnsealDateMenu = false;
+          return;
+        },
+
         addStock (item) {
           this.editedIndex = this.stockerList.indexOf(item)
           this.editedItem = Object.assign({}, item)
           this.editedItem.StockCount = 1
-          this.editedItem.LastBuyDate = (new Date()).toISOString().substr(0, 10).replace(/-/g, '/')
+          this.editedItem.LastBuyDate = (new Date()).toISOString().substr(0, 10)
+          this.editedItem.LastBuyDateDisplay = (new Date()).toISOString().substr(0, 10).replace(/-/g, '/')
           this.addDialog = true
         },
 
@@ -595,7 +612,8 @@
           this.editedIndex = this.stockerList.indexOf(item)
           this.editedItem = Object.assign({}, item)
           this.editedItem.StockCount = 1
-          this.editedItem.LastUnsealDate = (new Date()).toISOString().substr(0, 10).replace(/-/g, '/')
+          this.editedItem.LastUnsealDate = (new Date()).toISOString().substr(0, 10)
+          this.editedItem.LastUnsealDateDisplay = (new Date()).toISOString().substr(0, 10).replace(/-/g, '/')
           this.subDialog = true
         },
 
