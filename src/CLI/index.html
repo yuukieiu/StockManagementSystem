@@ -599,7 +599,7 @@
             stocker: {
               id: this.editedItem.StockerID,
               count: this.editedItem.StockCount,
-              lastbuydate: this.editedItem.LastBuyDate
+              lastbuydate: this.editedItem.LastBuyDateDisplay
             }
           });
           //alert('以下のデータを送信するよ。\n' + params)
@@ -633,7 +633,7 @@
             stocker: {
               id: this.editedItem.StockerID,
               count: this.editedItem.StockCount,
-              lastunsealdate: this.editedItem.LastUnsealDate
+              lastunsealdate: this.editedItem.LastUnsealDateDisplay
             }
           });
           //alert('以下のデータを送信するよ。\n' + params)
@@ -717,8 +717,8 @@
               name: this.editedItem.StockerName,
               category: this.editedItem.Category,
               count: this.editedItem.StockCount,
-              lastbuydate: this.editedItem.LastBuyDate,
-              lastunsealdate: this.editedItem.LastUnsealDate,
+              lastbuydate: this.editedItem.LastBuyDateDisplay,
+              lastunsealdate: this.editedItem.LastUnsealDateDisplay,
               notifythreshold: this.editedItem.NotifyThreshold
             }
           });
