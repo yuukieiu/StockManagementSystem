@@ -333,7 +333,9 @@
             </template>
             <template v-slot:expanded-item="{ headers, item }">
               <td :colspan="headers.length">
-                分類： {{ item.Category }} 最終購入日： {{ item.LastBuyDate.replace(/-/g, '/') }} 最終開封日： {{ item.LastUnsealDate.replace(/-/g, '/') }}
+                分類： {{ item.Category }}<br>
+                最終購入日： {{ item.LastBuyDate.replace(/-/g, '/') }}<br>
+                最終開封日： {{ item.LastUnsealDate.replace(/-/g, '/') }}
                 <v-spacer></v-spacer>
                 <!--ストック情報更新ダイアログ-->
                 <v-dialog v-model="editDialog" max-width="500px">
