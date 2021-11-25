@@ -315,18 +315,16 @@
 
             <!--操作アイコン-->
             <template v-slot:item.actions="{ item }">
-              <v-icon
-                large
-                @click="addStock(item)"
-              >
-                add_circle_outline
-              </v-icon>
-              <v-icon
-                large
-                @click="subStock(item)"
-              >
-                remove_circle_outline
-              </v-icon>
+              <v-btn color="indigo" dark small class="mx-2" fab @click="addStock(item)">
+                <v-icon dark>
+                  add
+                </v-icon>
+              </v-btn>
+              <v-btn color="indigo" dark small class="mx-2" fab @click="subStock(item)">
+                <v-icon dark>
+                  remove
+                </v-icon>
+              </v-btn>
             </template>
             <template v-slot:no-data>
               データなし
