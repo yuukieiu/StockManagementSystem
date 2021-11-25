@@ -315,6 +315,7 @@
 
             <!--操作アイコン-->
             <template v-slot:item.actions="{ item }">
+              <v-container>
               <v-row>
               <v-col>
               <v-btn color="primary" dark x-small class="mx-2" fab @click="addStock(item)">
@@ -331,6 +332,7 @@
               </v-btn>
               </v-col>
             </v-row>
+          </v-container>
             </template>
             <template v-slot:no-data>
               データなし
