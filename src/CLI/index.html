@@ -346,11 +346,11 @@
                 <!--ストック情報更新ダイアログ-->
                 <v-dialog v-model="editDialog" max-width="500px">
                   <template v-slot:activator="{ on, attrs }">
-                    <v-btn color="indigo" dark small class="mx-1" rounded v-bind="attrs" v-on="on" @click="editStock(item)">
+                    <v-btn color="indigo" dark small class="mr-1" rounded v-bind="attrs" v-on="on" @click="editStock(item)">
                       <v-icon dark>
                         mdi-pencil
                       </v-icon>
-                      ストック情報編集
+                      登録情報編集
                     </v-btn>
                   </template>
                   <v-card>
@@ -394,7 +394,7 @@
                 <!--操作取り消しダイアログ-->
                 <v-dialog v-model="undoDialog" max-width="500px">
                   <template v-slot:activator="{ on, attrs }">
-                    <v-btn color="indigo" dark small class="mr-1" rounded v-bind="attrs" v-on="on" @click="undoOperation(item)">
+                    <v-btn color="indigo" dark small class="mx-1" rounded v-bind="attrs" v-on="on" @click="undoOperation(item)">
                       <v-icon dark>
                         undo
                       </v-icon>
@@ -432,7 +432,7 @@
                       <v-icon dark>
                         delete
                       </v-icon>
-                      ストック品削除
+                      削除
                     </v-btn>
                   </template>
                   <v-card>
