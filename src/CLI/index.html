@@ -346,7 +346,7 @@
                 <!--ストック情報更新ダイアログ-->
                 <v-dialog v-model="editDialog" max-width="500px">
                   <template v-slot:activator="{ on, attrs }">
-                    <v-btn color="indigo" dark small class="mr-1" rounded v-bind="attrs" v-on="on" @click="editStock(item)">
+                    <v-btn color="indigo" dark small class="mr-1 my-2" rounded v-bind="attrs" v-on="on" @click="editStock(item)">
                       <v-icon dark>
                         mdi-pencil
                       </v-icon>
@@ -394,7 +394,7 @@
                 <!--操作取り消しダイアログ-->
                 <v-dialog v-model="undoDialog" max-width="500px">
                   <template v-slot:activator="{ on, attrs }">
-                    <v-btn color="indigo" dark small class="mx-1" rounded v-bind="attrs" v-on="on" @click="undoOperation(item)">
+                    <v-btn color="indigo" dark small class="mx-1 my-2" rounded v-bind="attrs" v-on="on" @click="undoOperation(item)">
                       <v-icon dark>
                         undo
                       </v-icon>
@@ -428,7 +428,7 @@
                 <!--ストック品削除ダイアログ-->
                 <v-dialog v-model="deleteDialog" max-width="500px">
                   <template v-slot:activator="{ on, attrs }">
-                    <v-btn color="error" dark small class="ms-1" rounded v-bind="attrs" v-on="on" @click="deleteStock(item)">
+                    <v-btn color="error" dark small class="ms-1 my-2" rounded v-bind="attrs" v-on="on" @click="deleteStock(item)">
                       <v-icon dark>
                         delete
                       </v-icon>
