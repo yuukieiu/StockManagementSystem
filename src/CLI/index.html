@@ -318,14 +318,14 @@
               <v-container>
               <v-row>
               <v-col>
-              <v-btn color="primary" dark x-small class="mx-2" fab @click="addStock(item)">
+              <v-btn color="primary" dark x-small class="mx-1" fab @click="addStock(item)">
                 <v-icon dark>
                   add
                 </v-icon>
               </v-btn>
               </v-col>
               <v-col>
-              <v-btn color="primary" dark x-small class="mx-2" fab @click="subStock(item)">
+              <v-btn color="primary" dark x-small class="mx-1" fab @click="subStock(item)">
                 <v-icon dark>
                   remove
                 </v-icon>
@@ -424,13 +424,14 @@
                   </v-card>
                 </v-dialog>
                 <!--ストック品削除ダイアログ-->
-                <v-icon
-                  large
-                  @click="deleteStock(item)"
-                >
-                  delete
-                </v-icon>
                 <v-dialog v-model="deleteDialog" max-width="500px">
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn color="error" outlined dark small class="mx-2" fab v-bind="attrs" v-on="on" @click="deleteStock(item)">
+                      <v-icon dark>
+                        delete
+                      </v-icon>
+                    </v-btn>
+                  </template>
                   <v-card>
                     <v-card-title class="text-h5">削除しますか？</v-card-title>
                     <v-card-actions>
