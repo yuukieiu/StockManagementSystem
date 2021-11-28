@@ -318,14 +318,14 @@
               <v-container class="pa-0 ma-0">
               <v-row class="pa-0 ma-0">
               <v-col class="pa-0 ma-0">
-              <v-btn color="white" outlined dark x-small class="pa-1 ma-0" @click="addStock(item)">
+              <v-btn color="white" outlined dark small class="pa-1 ma-0" @click="addStock(item)">
                 <v-icon dark>
                   add
                 </v-icon>
               </v-btn>
               </v-col>
               <v-col class="pa-0 ma-0">
-              <v-btn color="white" outlined dark x-small class="pa-1 ma-0" @click="subStock(item)">
+              <v-btn color="white" outlined dark small class="pa-1 ma-0" @click="subStock(item)">
                 <v-icon dark>
                   remove
                 </v-icon>
@@ -484,12 +484,12 @@
         search: '',
         drawer: false,
         headers: [
-          { text: '品名', value: 'StockerName' , groupable: false, width: '40%'},
-          { text: '分類', value: 'Category' , groupable: true, width: '0%'},
-          { text: '個数', value: 'StockCount' , groupable: false, width: '15%'},
-          { text: '閾値', value: 'NotifyThreshold', sortable: false, groupable: false, width: '15%'},
-          { text: '操作', value: 'actions', sortable: false , groupable: false, width: '30%'},
-          { text: '', value: 'data-table-expand', sortable: false , groupable: false, width: '0%'},
+          { text: '品名', value: 'StockerName' , groupable: false},
+          { text: '分類', value: 'Category' , groupable: true},
+          { text: '個数', value: 'StockCount' , groupable: false},
+          { text: '閾値', value: 'NotifyThreshold', sortable: false, groupable: false},
+          { text: '操作', value: 'actions', sortable: false , groupable: false},
+          { text: '', value: 'data-table-expand', sortable: false , groupable: false},
         ],
         editedIndex: -1,
         editedItem: {
