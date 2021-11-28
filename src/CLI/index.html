@@ -106,7 +106,7 @@
                   label="Search"
                   single-line
                   hide-details
-                  class="px-4"
+                  class="px-2"
                 ></v-text-field>
 
                 <!--ストック品追加ダイアログ-->
@@ -318,14 +318,14 @@
               <v-container>
               <v-row>
               <v-col>
-              <v-btn color="primary" dark x-small class="mx-1" fab @click="addStock(item)">
+              <v-btn color="primary" dark x-small class="pa-0 mx-0" fab @click="addStock(item)">
                 <v-icon dark>
                   add
                 </v-icon>
               </v-btn>
               </v-col>
               <v-col>
-              <v-btn color="primary" dark x-small class="mx-1" fab @click="subStock(item)">
+              <v-btn color="primary" dark x-small class="pa-0 mx-0" fab @click="subStock(item)">
                 <v-icon dark>
                   remove
                 </v-icon>
@@ -426,7 +426,7 @@
                 <!--ストック品削除ダイアログ-->
                 <v-dialog v-model="deleteDialog" max-width="500px">
                   <template v-slot:activator="{ on, attrs }">
-                    <v-btn color="error" outlined dark small class="mx-2" fab v-bind="attrs" v-on="on" @click="deleteStock(item)">
+                    <v-btn color="error" dark small class="mx-2" fab v-bind="attrs" v-on="on" @click="deleteStock(item)">
                       <v-icon dark>
                         delete
                       </v-icon>
