@@ -501,10 +501,10 @@
           StockerName: '',
           StockCount: 0,
           Category: '',
-          LastBuyDate: (new Date(new Date().toLocaleString({ timeZone: 'Asia/Tokyo' }))).toISOString().substr(0, 10),
-          LastBuyDateDisplay: (new Date(new Date().toLocaleString({ timeZone: 'Asia/Tokyo' }))).toISOString().substr(0, 10).replace(/-/g, '/'),
-          LastUnsealDate: (new Date(new Date().toLocaleString({ timeZone: 'Asia/Tokyo' }))).toISOString().substr(0, 10),
-          LastUnsealDateDisplay: (new Date(new Date().toLocaleString({ timeZone: 'Asia/Tokyo' }))).toISOString().substr(0, 10).replace(/-/g, '/'),
+          LastBuyDate: (new Date(new Date().toLocaleString("sv-SE", { timeZone: 'Asia/Tokyo' }))).substr(0, 10),
+          LastBuyDateDisplay: (new Date(new Date().toLocaleString("sv-SE", { timeZone: 'Asia/Tokyo' }))).substr(0, 10).replace(/-/g, '/'),
+          LastUnsealDate: (new Date(new Date().toLocaleString("sv-SE", { timeZone: 'Asia/Tokyo' }))).substr(0, 10),
+          LastUnsealDateDisplay: (new Date(new Date().toLocaleString("sv-SE", { timeZone: 'Asia/Tokyo' }))).substr(0, 10).replace(/-/g, '/'),
           NotifyThreshold: 0,
         },
         defaultItem: {
@@ -513,10 +513,10 @@
           StockerName: '',
           StockCount: 0,
           Category: '',
-          LastBuyDate: (new Date(new Date().toLocaleString({ timeZone: 'Asia/Tokyo' }))).toISOString().substr(0, 10),
-          LastBuyDateDisplay: (new Date(new Date().toLocaleString({ timeZone: 'Asia/Tokyo' }))).toISOString().substr(0, 10).replace(/-/g, '/'),
-          LastUnsealDate: (new Date(new Date().toLocaleString({ timeZone: 'Asia/Tokyo' }))).toISOString().substr(0, 10),
-          LastUnsealDateDisplay: (new Date(new Date().toLocaleString({ timeZone: 'Asia/Tokyo' }))).toISOString().substr(0, 10).replace(/-/g, '/'),
+          LastBuyDate: (new Date(new Date().toLocaleString("sv-SE", { timeZone: 'Asia/Tokyo' }))).substr(0, 10),
+          LastBuyDateDisplay: (new Date(new Date().toLocaleString("sv-SE", { timeZone: 'Asia/Tokyo' }))).substr(0, 10).replace(/-/g, '/'),
+          LastUnsealDate: (new Date(new Date().toLocaleString("sv-SE", { timeZone: 'Asia/Tokyo' }))).substr(0, 10),
+          LastUnsealDateDisplay: (new Date(new Date().toLocaleString("sv-SE", { timeZone: 'Asia/Tokyo' }))).substr(0, 10).replace(/-/g, '/'),
           NotifyThreshold: 0,
         },
         historyItem: {
@@ -601,8 +601,8 @@
           this.editedIndex = this.stockerList.indexOf(item)
           this.editedItem = Object.assign({}, item)
           this.editedItem.StockCount = 1
-          this.editedItem.LastBuyDate = (new Date(new Date().toLocaleString({ timeZone: 'Asia/Tokyo' }))).toISOString().substr(0, 10)
-          this.editedItem.LastBuyDateDisplay = (new Date(new Date().toLocaleString({ timeZone: 'Asia/Tokyo' }))).toISOString().substr(0, 10).replace(/-/g, '/')
+          this.editedItem.LastBuyDate = (new Date(new Date().toLocaleString("sv-SE", { timeZone: 'Asia/Tokyo' }))).substr(0, 10)
+          this.editedItem.LastBuyDateDisplay = (new Date(new Date().toLocaleString("sv-SE", { timeZone: 'Asia/Tokyo' }))).substr(0, 10).replace(/-/g, '/')
           this.addDialog = true
         },
 
@@ -635,8 +635,8 @@
           this.editedIndex = this.stockerList.indexOf(item)
           this.editedItem = Object.assign({}, item)
           this.editedItem.StockCount = 1
-          this.editedItem.LastUnsealDate = (new Date(new Date().toLocaleString({ timeZone: 'Asia/Tokyo' }))).toISOString().substr(0, 10)
-          this.editedItem.LastUnsealDateDisplay = (new Date(new Date().toLocaleString({ timeZone: 'Asia/Tokyo' }))).toISOString().substr(0, 10).replace(/-/g, '/')
+          this.editedItem.LastUnsealDate = (new Date(new Date().toLocaleString("sv-SE", { timeZone: 'Asia/Tokyo' }))).substr(0, 10)
+          this.editedItem.LastUnsealDateDisplay = (new Date(new Date().toLocaleString("sv-SE", { timeZone: 'Asia/Tokyo' }))).substr(0, 10).replace(/-/g, '/')
           this.subDialog = true
         },
 
