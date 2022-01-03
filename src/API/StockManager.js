@@ -277,3 +277,19 @@ function undoStockerOperation(targetStockerId, targetOperationId) {
   writeEndLog(functionName);
   return returnValue;
 }
+
+// ------------------------
+// 通知用ストック品一覧作成
+// ------------------------
+function createNotifyStockList() {
+  var notifyStocks = getNotifyStockList();
+  // 分類でソート
+  notifyStocks.sort(function(a,b) {
+    if (a.Category > b.Category) return 1;
+    if (a.Category < b.Category) return -1;
+    if (a.LastUnsealDate > b.LastUnsealDate) return 1;
+    if (a.LastUnsealDate < b.LastUnsealDate) return -1;
+    return 0;
+  });
+  return notifyStocks;
+}

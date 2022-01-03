@@ -1,3 +1,7 @@
+const TARGET_URL = PropertiesService.getScriptProperties().getProperty("TARGET_URL");
+
+const TARGET_URL_CHECK = TARGET_URL + "?p1=check";
+
 function sendLINE() {
     let messageText = "週次のストック集計が実行されました。\n"
     messageText = messageText + createNotifyMessage();
@@ -27,15 +31,11 @@ function createNotifyMessage() {
   // メッセージ作成
   var today = new Date();
   messageText = messageText + "■" + today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate() + " ストック閾値到達品一覧\n最終開封日：品名：ストック数\n";
-  var notifyStocks = getNotifyStockList();
-  // 分類でソート
-  notifyStocks.sort(function(a,b) {
-    if (a.Category > b.Category) return 1;
-    if (a.Category < b.Category) return -1;
-    if (a.LastUnsealDate > b.LastUnsealDate) return 1;
-    if (a.LastUnsealDate < b.LastUnsealDate) return -1;
-    return 0;
-  })
+
+  var response = UrlFetchApp.fetch(TARGET_URL_CHECK);
+  var stockList = response.getContentText();
+  var stockListJson = JSON.parse(JSON.stringify(stockList));
+  var notifyStocks = stockListJson.stockerList;
 
   //処理中の分類
   var currentCategory = "";

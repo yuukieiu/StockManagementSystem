@@ -196,6 +196,30 @@ function getLastOperationHistoryById(stockerId = "") {
   return operationHistoriesStocker[0];
 }
 
+// ------------------------
+// 通知対象ストック品リスト取得
+// ------------------------
+function getNotifyStockList() {
+  var result = [];
+  var stockerArrays = Stocker.getRange(DATA_START_ROW,GetItemColumnNum(STOCKER_ID),Stocker.getLastRow()-1,GetItemColumnNum(CATEGORY)).getValues();
+  for (var i = 0; i < stockerArrays.length; i++) {
+    var stock = {
+      StockerID       : stockerArrays[i][GetItemColumnNum(STOCKER_ID)-1],        // ストックID
+      StockerName     : stockerArrays[i][GetItemColumnNum(STOCKER_NAME)-1],      // ストック品名
+      StockCount      : stockerArrays[i][GetItemColumnNum(STOCKER_COUNT)-1],     // ストック数
+      LastBuyDate     : Utilities.formatDate(stockerArrays[i][GetItemColumnNum(LAST_BUY_DATE)-1],"JST", "yyyy/MM/dd"),     // 最終購入日
+      LastUnsealDate  : Utilities.formatDate(stockerArrays[i][GetItemColumnNum(LAST_UNSEAL_DATE)-1],"JST", "yyyy/MM/dd"),  // 最終開封日
+      NotifyThreshold : stockerArrays[i][GetItemColumnNum(NOTIFY_THRESHOLD)-1],  // 通知閾値
+      Category        : stockerArrays[i][GetItemColumnNum(CATEGORY)-1],          // 分類
+      RowIndex        : i
+    }
+    if (stock.StockCount <= stock.NotifyThreshold) {
+      result.push(stock);
+    }
+  }
+  return result;
+}
+
 // ★★★Update★★★
 // ------------------------
 // ストック補充(ストックID)

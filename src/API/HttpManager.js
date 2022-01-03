@@ -8,6 +8,8 @@ function doGet(e) {
       result = getCategoryList();
     } else if (e.parameter.p1 == "gethis") {
       result = getLastOperationHistory(e.parameter.p2);
+    } else if (e.parameter.p1 == "check") {
+      result = createNotifyStockList();
     } else {
       result = getStockerList();
     }
