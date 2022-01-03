@@ -34,7 +34,7 @@ function createNotifyMessage() {
 
   var response = UrlFetchApp.fetch(TARGET_URL_CHECK);
   var stockList = response.getContentText();
-  var stockListJson = JSON.parse(JSON.stringify(stockList));
+  var stockListJson = JSON.parse(stockList);
   var notifyStocks = stockListJson;
 
   //処理中の分類
