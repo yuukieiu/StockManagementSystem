@@ -342,7 +342,7 @@ function insertRowAtLast(value = []) {
 // ------------------------
 function addOperationHistory(stockerId, stockerName, stockCount, lastBuyDate, lastUnsealDate, notifyThreshold, category, operationUser, operationFunction,
     operationStockerName, operationStockCount, operationNotifyThreshold, operationCategory) {
-  var operationTimestamp = new Date(new Date().toLocaleString({ timeZone: 'Asia/Tokyo' }));
+  var operationTimestamp = new Date().toLocaleString("sv-SE", { timeZone: 'Asia/Tokyo' });
   var operationId = stockerId + Utilities.getUuid();
   while (OperationHistory.createTextFinder(operationId).findAll().length > 0) {
     operationId = stockerId + Utilities.getUuid();
