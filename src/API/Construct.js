@@ -34,8 +34,17 @@ const OPERATION_FUNCTION = "OperationFunction";
 // ストック品名（操作後）
 const OPERATION_STOCKER_NAME = "OperationStockerName";
 
-// ストック数（操作後）
+// 操作ストック数
 const OPERATION_STOCKER_COUNT = "OperationStockCount";
+
+// ストック数（編集後）
+const EDITED_STOCKER_COUNT = "EditedStockerCount";
+
+// 最終購入日（編集後）
+const EDITED_LAST_BUY_DATE = "EditedLastBuyDate";
+
+// 最終開封日（編集後）
+const EDITED_LAST_UNSEAL_DATE = "EditedLastUnsealDate";
 
 // 通知閾値（操作後）
 const OPERATION_NOTIFY_THRESHOLD = "OperationNotifyThreshold";
@@ -82,8 +91,17 @@ const DISP_OPERATION_FUNCTION = "操作内容";
 // ストック品名（操作後）
 const DISP_OPERATION_STOCKER_NAME = "ストック品名（操作後）";
 
-// ストック数（操作後）
-const DISP_OPERATION_STOCKER_COUNT = "ストック数（操作後）";
+// 操作ストック数
+const DISP_OPERATION_STOCKER_COUNT = "操作ストック数";
+
+// ストック数（編集後）
+const DISP_EDITED_STOCKER_COUNT = "ストック数（編集後）";
+
+// 最終購入日（編集後）
+const DISP_EDITED_LAST_BUY_DATE = "最終購入日（編集後）";
+
+// 最終開封日（編集後）
+const DISP_EDITED_LAST_UNSEAL_DATE = "最終開封日（編集後）";
 
 // 通知閾値（操作後）
 const DISP_OPERATION_NOTIFY_THRESHOLD = "通知閾値（操作後）";
@@ -130,14 +148,23 @@ const COLNUM_OPERATION_FUNCTION = 10;
 // ストック品名（操作後）
 const COLNUM_OPERATION_STOCKER_NAME = 11;
 
-// ストック数（操作後）
+// 操作ストック数
 const COLNUM_OPERATION_STOCKER_COUNT = 12;
 
+// ストック数（編集後）
+const COLNUM_EDITED_STOCKER_COUNT = 13;
+
+// 最終購入日（編集後）
+const COLNUM_EDITED_LAST_BUY_DATE = 14;
+
+// 最終開封日（編集後）
+const COLNUM_EDITED_LAST_UNSEAL_DATE = 15;
+
 // 通知閾値（操作後）
-const COLNUM_OPERATION_NOTIFY_THRESHOLD = 13;
+const COLNUM_OPERATION_NOTIFY_THRESHOLD = 16;
 
 // 分類（操作後）
-const COLNUM_OPERATION_CATEGORY = 14;
+const COLNUM_OPERATION_CATEGORY = 17;
 
 // 操作履歴ID
-const COLNUM_OPERATION_ID = 15;
+const COLNUM_OPERATION_ID = 18;

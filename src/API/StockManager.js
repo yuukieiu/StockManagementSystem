@@ -193,7 +193,7 @@ function registerStocker(user, stockName, stockCount = 0, lastBuyDate = null, la
 // ------------------------
 // ストック情報更新
 // ------------------------
-function updateStocker(user, targetStockerId = "", newStockerName, newCategory, newNotifyThreshold) {
+function updateStocker(user, targetStockerId = "", newStockerName, newStockerCount, newLastBuyDate, newLastUnsealDate, newCategory, newNotifyThreshold) {
   const functionName = "ストック情報更新";
   writeStartLog(functionName);
 
@@ -203,7 +203,7 @@ function updateStocker(user, targetStockerId = "", newStockerName, newCategory, 
   }
 
   try {
-      var result = updateStockInfoById(user, targetStockerId, newStockerName, newCategory, newNotifyThreshold);
+      var result = updateStockInfoById(user, targetStockerId, newStockerName, newStockerCount, newLastBuyDate, newLastUnsealDate, newCategory, newNotifyThreshold);
   } catch (e) {
     returnValue.status = false;
     switch(e.message) {
