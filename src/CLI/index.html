@@ -383,7 +383,7 @@
                           </v-col>
                           <v-col cols="12" sm="6" md="4">
                             <v-menu
-                              v-model="lastBuyDateMenuCreate"
+                              v-model="lastBuyDateMenuEdit"
                               :close-on-content-click="false"
                               :nudge-right="40"
                               transition="scale-transition"
@@ -401,11 +401,11 @@
                               >
                               </v-text-field>
                             </template>
-                            <v-date-picker v-model="editedItem.LastBuyDate" @input="formatDate(editedItem.LastBuyDate, 'LastBuyDateCreate')"/>
+                            <v-date-picker v-model="editedItem.LastBuyDate" @input="formatDate(editedItem.LastBuyDate, 'LastBuyDateEdit')"/>
                           </v-col>
                           <v-col cols="12" sm="6" md="4">
                             <v-menu
-                              v-model="lastUnsealDateMenuCreate"
+                              v-model="lastUnsealDateMenuEdit"
                               :close-on-content-click="false"
                               :nudge-right="40"
                               transition="scale-transition"
@@ -423,7 +423,7 @@
                               >
                               </v-text-field>
                             </template>
-                            <v-date-picker v-model="editedItem.LastUnsealDate" @input="formatDate(editedItem.LastUnsealDate, 'LastUnsealDateCreate')"/>
+                            <v-date-picker v-model="editedItem.LastUnsealDate" @input="formatDate(editedItem.LastUnsealDate, 'LastUnsealDateEdit')"/>
                           </v-col>
                           <v-col cols="12" sm="6" md="4">
                             <v-select
@@ -529,8 +529,10 @@
         operationText: '',
         lastBuyDateMenuCreate: false,
         lastBuyDateMenuAdd: false,
+        lastBuyDateMenuEdit: false,
         lastUnsealDateMenuCreate: false,
         lastUnsealDateMenuSub: false,
+        lastUnsealDateMenuEdit: false,
         snackbar: false,
         snackbarText: '',
         isUndoConfirmDisabled: true,
@@ -644,6 +646,14 @@
             case 'LastUnsealDateSub':
               this.editedItem.LastUnsealDateDisplay = `${year}/${month}/${day}`;
               this.lastUnsealDateMenuSub = false;
+              break;
+            case 'LastBuyDateEdit':
+              this.editedItem.LastBuyDateDisplay = `${year}/${month}/${day}`;
+              this.lastBuyDateMenuEdit = false;
+              break;
+            case 'LastUnsealDateEdit':
+              this.editedItem.LastUnsealDateDisplay = `${year}/${month}/${day}`;
+              this.lastUnsealDateMenuEdit = false;
               break;
           }
           return;
