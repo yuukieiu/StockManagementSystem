@@ -266,7 +266,7 @@ function subStockCountById(user, stockId = "", subCount = 0, lastUnsealDate) {
 // ------------------------
 // ストック情報更新（ストックID）
 // ------------------------
-function updateStockInfoById(user, targetStockerID = "", newStockerName, newCategory, newNotifyThreshold) {
+function updateStockInfoById(user, targetStockerID = "", newStockerName, newStockerCount, newLastBuyDate, newLastUnsealDate, newCategory, newNotifyThreshold) {
   // new～は変更が無ければそのまま入ってくるので、値の検証はしない
 
   // なにもなければ成功
@@ -281,6 +281,15 @@ function updateStockInfoById(user, targetStockerID = "", newStockerName, newCate
     if (check != null) throw new Error(DB_DUPLICATE_STOCKERNAME_EXCEPTION);
     writeValueInCell(STOCKER_NAME, target.RowIndex, newStockerName);
   }
+  if (target.StockCount != newStockerCount) {
+    writeValueInCell(STOCKER_COUNT, target.RowIndex, newStockerCount);
+  }
+  if (target.LastBuyDate != newLastBuyDate) {
+    writeValueInCell(LAST_BUY_DATE, target.RowIndex, newLastBuyDate);
+  }
+  if (target.LastUnsealDate != newLastUnsealDate) {
+    writeValueInCell(LAST_UNSEAL_DATE, target.RowIndex, newLastUnsealDate);
+  }
   if (target.Category != newCategory) {
     writeValueInCell(CATEGORY, target.RowIndex, newCategory);
   }
@@ -290,7 +299,7 @@ function updateStockInfoById(user, targetStockerID = "", newStockerName, newCate
 
   // 操作履歴書き込み
   addOperationHistory(target.StockerID, target.StockerName, target.StockCount, target.LastBuyDate, target.LastUnsealDate, target.NotifyThreshold,
-    target.Category, user, "edit", newStockerName, "", newNotifyThreshold, newCategory);
+    target.Category, user, "edit", newStockerName, "", newStockerCount, newLastBuyDate, newLastUnsealDate, newNotifyThreshold, newCategory);
   return result;
 }
 
@@ -365,12 +374,12 @@ function insertRowAtLast(value = []) {
 // 履歴書き込み
 // ------------------------
 function addOperationHistory(stockerId, stockerName, stockCount, lastBuyDate, lastUnsealDate, notifyThreshold, category, operationUser, operationFunction,
-    operationStockerName, operationStockCount, operationNotifyThreshold, operationCategory) {
+    operationStockerName, operationStockCount, editedStockerCount, editedLastBuyDate, editedLastUnsealDate, operationNotifyThreshold, operationCategory) {
   var operationTimestamp = new Date().toLocaleString("sv-SE", { timeZone: 'Asia/Tokyo' });
   var operationId = stockerId + Utilities.getUuid();
   while (OperationHistory.createTextFinder(operationId).findAll().length > 0) {
     operationId = stockerId + Utilities.getUuid();
   }
   OperationHistory.appendRow([stockerId, stockerName, stockCount, lastBuyDate, lastUnsealDate, notifyThreshold, category, operationTimestamp, operationUser, operationFunction,
-    operationStockerName, operationStockCount, operationNotifyThreshold, operationCategory, operationId]);
+    operationStockerName, operationStockCount, editedStockerCount, editedLastBuyDate, editedLastUnsealDate, operationNotifyThreshold, operationCategory, operationId]);
 }
